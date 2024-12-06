@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    
+    /* Primary Colors */
+    --primary: 217 89% 47%; /* #0271EE */
+    --primary-foreground: 0 0% 100%; /* #FFFFFF */
+    
+    /* Secondary Colors */
+    --secondary: 0 0% 20%; /* #333333 */
+    --secondary-foreground: 0 0% 37%; /* #5E5E5E */
+    
+    /* UI Colors */
+    --muted: 220 13% 91%; /* #E5E7EB */
+    --muted-foreground: 0 0% 37%; /* #5E5E5E */
+    
+    /* Active/Hover State */
+    --accent: 214 100% 95%; /* #E7F2FF */
+    --accent-foreground: 217 89% 47%; /* #0271EE */
+    
+    /* Other System Colors */
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 217 89% 47%;
+    
+    /* Chart Colors */
+    --chart-1: 217 89% 47%;
+    --chart-2: 200 80% 60%;
+    --chart-3: 280 70% 60%;
+    --chart-4: 150 60% 50%;
+    --chart-5: 320 70% 60%;
+    
+    --radius: 0.75rem;
+  }
+
+  /* Typography */
+  html {
+    font-family: 'Roboto', sans-serif;
+  }
+
+  h1 {
+    @apply text-[18px] font-bold leading-[110%];
+  }
+
+  h2 {
+    @apply text-[14px] font-medium leading-[110%];
+  }
+
+  h3 {
+    @apply text-[12px] font-medium leading-[110%];
+  }
+
+  .body-l {
+    @apply text-[16px] font-normal leading-[140%];
+  }
+
+  .body-m {
+    @apply text-[14px] font-normal leading-[140%];
+  }
+
+  .body-s {
+    @apply text-[12px] font-normal leading-[140%];
+  }
+
+  .caption-m {
+    @apply text-[12px] font-medium leading-[100%];
+  }
+
+  .caption-s {
+    @apply text-[10px] font-medium leading-[100%];
+  }
+
+  .button-xl {
+    @apply text-[18px] font-bold leading-[24px];
+  }
+
+  .button-l {
+    @apply text-[16px] font-bold leading-[24px];
+  }
+
+  .button-m {
+    @apply text-[14px] font-bold leading-[24px];
+  }
+
+  .button-s {
+    @apply text-[12px] font-bold leading-[24px];
+  }
+}
+
+/* Rest of your existing CSS */
+/* Glass effect styles */
+.glass-card {
+  @apply bg-white/80 backdrop-blur-md border border-white/20;
+  box-shadow: 0 8px 32px 0 rgba(2, 113, 238, 0.07);
+}
+
+.glass-card-hover {
+  @apply transition-all duration-300;
+  &:hover {
+    @apply bg-white/90;
+    box-shadow: 0 12px 36px 0 rgba(2, 113, 238, 0.1);
+    transform: translateY(-2px);
+  }
+}
+
+.gradient-border {
+  @apply relative;
+  &::before {
+    content: '';
+    @apply absolute inset-0 -z-10 rounded-[inherit];
+    padding: 1px;
+    background: linear-gradient(
+      to right,
+      hsl(217 89% 47% / 0.5),
+      hsl(214 100% 95% / 0.5)
+    );
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent rounded-full;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-primary/20 rounded-full;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-primary/30;
+}
+
+/* Animation utilities */
+.hover-scale {
+  @apply transition-transform duration-200;
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
