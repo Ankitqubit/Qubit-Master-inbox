@@ -26,45 +26,46 @@ const knowledgeBases: KnowledgeBase[] = [
 
 export default function KnowledgeBasePage() {
   return (
-    <div className="h-full p-8 space-y-8">
-      <div className="flex justify-between items-center">
-        <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-primary to-chart-1 bg-clip-text text-transparent">
-          Knowledge Base
-        </h1>
-        <Button 
-          className="bg-primary hover:bg-primary/90 shadow-lg hover:shadow-primary/25 transition-all duration-300"
-        >
-          <Plus className="mr-2 h-5 w-5" />
+    <div className="flex-1 space-y-6 px-6 py-6">
+      {/* Header section */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold text-gray-900">Knowledge Base</h1>
+          <p className="text-sm text-gray-500">Manage your knowledge base documents and templates</p>
+        </div>
+        <Button className="gap-2">
+          <Plus className="h-4 w-4" />
           Add Knowledge Base
         </Button>
       </div>
 
-      <div className="max-w-3xl mx-auto space-y-6">
+      {/* Knowledge Base Cards */}
+      <div className="grid gap-4">
         {knowledgeBases.map((kb) => (
           <Card 
             key={kb.id}
-            className="glass-card p-6 hover:shadow-lg transition-all duration-300"
+            className="bg-white p-6"
           >
             <div className="flex items-start justify-between">
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <Database className="h-5 w-5 text-primary" />
-                    <h2 className="text-lg font-semibold">{kb.name}</h2>
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50">
+                    <Database className="h-5 w-5 text-blue-500" />
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    {kb.description}
-                  </p>
+                  <div>
+                    <h2 className="text-lg font-semibold text-gray-900">{kb.name}</h2>
+                    <p className="text-sm text-gray-500">{kb.description}</p>
+                  </div>
                 </div>
               </div>
               <Link href={`/ai-agents/knowledge-base/${kb.id}`}>
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="flex items-center gap-2"
+                  className="text-gray-600 hover:text-gray-900"
                 >
-                  <Eye className="h-4 w-4" />
-                  View
+                  <Eye className="mr-2 h-4 w-4" />
+                  View Details
                 </Button>
               </Link>
             </div>

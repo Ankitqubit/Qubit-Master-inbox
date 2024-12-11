@@ -1,17 +1,15 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { MoreHorizontal, Trash2, Edit, ArrowUpDown, Copy } from "lucide-react"
+import { MoreHorizontal, ExternalLink } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuTrigger,
-  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
-import { StatusBadge } from "@/components/ui/status-badge"
+import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 
 export type Agent = {
@@ -19,42 +17,35 @@ export type Agent = {
   name: string
   description: string
   status: "active" | "inactive"
-  createdAt: string
-  knowledgeBase: string
+  lastActive?: string
+  knowledgeBase?: number
+  interactions?: number
 }
 
 export const columns: ColumnDef<Agent>[] = [
   {
     accessorKey: "name",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="p-0 hover:bg-transparent"
-        >
-          Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
+    header: "Names",
     cell: ({ row }) => {
+      const agent = row.original
+      
       return (
         <Link 
-          href={`/ai-agents/${row.original.id}`}
-          className="font-medium hover:underline cursor-pointer"
+          href={`/ai-agents/${agent.id}`}
+          className="flex items-center gap-1 text-[#0271EE] hover:underline font-medium"
         >
-          {row.getValue("name")}
+          {agent.name}
+          <ExternalLink className="h-3 w-3" />
         </Link>
       )
     }
   },
   {
     accessorKey: "description",
-    header: "Description",
+    header: "Descriptions",
     cell: ({ row }) => {
       return (
-        <div className="text-muted-foreground max-w-[500px] truncate">
+        <div className="text-gray-500">
           {row.getValue("description")}
         </div>
       )
@@ -63,57 +54,41 @@ export const columns: ColumnDef<Agent>[] = [
   {
     accessorKey: "status",
     header: "Status",
-    cell: ({ row, table }) => {
-      const status = row.getValue("status") as "active" | "inactive"
-      
-      const handleStatusChange = (newStatus: "active" | "inactive") => {
-        // Here you would typically make an API call to update the status
-        // For now, we'll just update the local state
-        const data = [...table.options.data]
-        const index = data.findIndex(item => item.id === row.original.id)
-        if (index !== -1) {
-          data[index] = { ...data[index], status: newStatus }
-          // Update the table data
-          table.options.meta?.updateData(data)
-        }
-      }
-
+    cell: ({ row }) => {
+      const status = row.getValue("status") as string
       return (
-        <StatusBadge status={status} onStatusChange={handleStatusChange} />
+        <div className="flex items-center">
+          {status === "active" ? (
+            <Badge className="bg-green-100 text-green-600 hover:bg-green-100">
+              <span className="w-1.5 h-1.5 rounded-full bg-green-600 mr-1.5" />
+              Active
+            </Badge>
+          ) : (
+            <Badge className="bg-gray-100 text-gray-600 hover:bg-gray-100">
+              <span className="w-1.5 h-1.5 rounded-full bg-gray-400 mr-1.5" />
+              Inactive
+            </Badge>
+          )}
+        </div>
       )
     }
   },
   {
     id: "actions",
     cell: ({ row }) => {
-      const agent = row.original
-
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem className="cursor-pointer">
-              <Edit className="mr-2 h-4 w-4" />
-              Edit
-            </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer">
-              <Copy className="mr-2 h-4 w-4" />
-              Clone
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer text-destructive">
-              <Trash2 className="mr-2 h-4 w-4" />
-              Delete
-            </DropdownMenuItem>
+            <DropdownMenuItem>Edit</DropdownMenuItem>
+            <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )
-    },
-  },
+    }
+  }
 ]

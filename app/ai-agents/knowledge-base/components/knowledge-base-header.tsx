@@ -24,20 +24,16 @@ export function KnowledgeBaseHeader({
 
   return (
     <>
-      <div className="flex justify-between items-center">
-        <div className="space-y-1">
-          <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-primary to-chart-1 bg-clip-text text-transparent">
-            {knowledgeBase.name}
-          </h1>
-          <p className="text-muted-foreground">
-            Manage knowledge base files and connected agents
-          </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold text-gray-900">{knowledgeBase.name}</h1>
+          <p className="text-sm text-gray-500">Manage knowledge base files and connected agents</p>
         </div>
         <Button 
-          className="bg-primary hover:bg-primary/90 shadow-lg hover:shadow-primary/25 transition-all duration-300"
+          className="gap-2"
           onClick={() => setAddFileOpen(true)}
         >
-          <Plus className="mr-2 h-5 w-5" />
+          <Plus className="h-4 w-4" />
           Add File
         </Button>
       </div>

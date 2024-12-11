@@ -107,7 +107,7 @@ function ActivityList({ items }: { items: ActivityItem[] }) {
           <div className="w-2 h-2 mt-2 rounded-full bg-primary flex-shrink-0" />
           <div className="flex-1 space-y-1">
             <div className="flex justify-between items-start">
-              <span className="font-medium text-primary/90">{item.action}</span>
+              <span className="text-sm font-medium text-gray-900">{item.action}</span>
               <span className="text-sm text-muted-foreground">
                 {formatActivityDate(item.timestamp)}
               </span>
@@ -122,30 +122,28 @@ function ActivityList({ items }: { items: ActivityItem[] }) {
 
 export function AgentHistory() {
   return (
-    <Card className="glass-card p-6">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-semibold">Recent Activity</h2>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="text-primary hover:text-primary/80 hover:bg-primary/10 transition-colors"
-            >
-              View Full History
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-2xl max-h-[80vh]">
-            <DialogHeader>
-              <DialogTitle className="text-xl font-semibold mb-4">Activity History</DialogTitle>
-            </DialogHeader>
-            <ScrollArea className="h-[calc(80vh-8rem)] pr-4 rounded-lg">
-              <ActivityList items={fullHistory} />
-            </ScrollArea>
-          </DialogContent>
-        </Dialog>
+    <Card className="glass-card overflow-hidden">
+      <div className="border-b bg-muted/30">
+        <div className="px-6 py-3 flex justify-between items-center">
+          <h2 className="text-lg font-semibold">Recent Activity</h2>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="ghost" size="sm">View All</Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-2xl max-h-[80vh]">
+              <DialogHeader>
+                <DialogTitle className="text-xl font-semibold mb-4">Activity History</DialogTitle>
+              </DialogHeader>
+              <ScrollArea className="h-[calc(80vh-8rem)] pr-4 rounded-lg">
+                <ActivityList items={fullHistory} />
+              </ScrollArea>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
-      <ActivityList items={recentActivity.slice(0, 2)} />
+      <div className="p-6">
+        <ActivityList items={recentActivity.slice(0, 2)} />
+      </div>
     </Card>
   )
 }
