@@ -84,21 +84,21 @@ export default function AgentsPage() {
         <div className="flex space-x-1 rounded-lg bg-gray-100 p-0.5 w-fit">
           <Button 
             variant={activeTab === "all" ? "secondary" : "ghost"}
-            className={activeTab === "all" ? "bg-white shadow-sm text-sm font-medium px-3 py-1 focus-visible:ring-0" : "text-gray-600 hover:text-gray-900 text-sm font-medium px-3 py-1"}
+            className={activeTab === "all" ? "bg-white text-sm font-medium px-3 py-1 focus-visible:ring-0" : "text-gray-600 hover:text-gray-900 text-sm font-medium px-3 py-1"}
             onClick={() => setActiveTab("all")}
           >
             All Agents
           </Button>
           <Button 
             variant={activeTab === "active" ? "secondary" : "ghost"}
-            className={activeTab === "active" ? "bg-white shadow-sm text-sm font-medium px-3 py-1 focus-visible:ring-0" : "text-gray-600 hover:text-gray-900 text-sm font-medium px-3 py-1"}
+            className={activeTab === "active" ? "bg-white text-sm font-medium px-3 py-1 focus-visible:ring-0" : "text-gray-600 hover:text-gray-900 text-sm font-medium px-3 py-1"}
             onClick={() => setActiveTab("active")}
           >
             Active
           </Button>
           <Button 
             variant={activeTab === "inactive" ? "secondary" : "ghost"}
-            className={activeTab === "inactive" ? "bg-white shadow-sm text-sm font-medium px-3 py-1 focus-visible:ring-0" : "text-gray-600 hover:text-gray-900 text-sm font-medium px-3 py-1"}
+            className={activeTab === "inactive" ? "bg-white text-sm font-medium px-3 py-1 focus-visible:ring-0" : "text-gray-600 hover:text-gray-900 text-sm font-medium px-3 py-1"}
             onClick={() => setActiveTab("inactive")}
           >
             Inactive
