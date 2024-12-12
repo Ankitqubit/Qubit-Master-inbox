@@ -26,7 +26,7 @@ export function AgentDetails({ agent }: AgentDetailsProps) {
   }
 
   return (
-    <div className="h-full p-8 space-y-8">
+    <div className="h-full p-8 space-y-8 bg-white">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold text-gray-900">
           {agent.name}
@@ -41,8 +41,8 @@ export function AgentDetails({ agent }: AgentDetailsProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Agent Details Card */}
-        <Card className="glass-card overflow-hidden md:col-span-2">
-          <div className="border-b bg-muted/30">
+        <Card className="border border-gray-200 bg-background md:col-span-2 overflow-hidden">
+          <div className="border-b border-gray-200 bg-[#F9FAFB]">
             <div className="px-6 py-3 flex justify-between items-center">
               <div>
                 <h2 className="text-lg font-semibold">Agent Details</h2>
@@ -110,9 +110,9 @@ export function AgentDetails({ agent }: AgentDetailsProps) {
           </div>
         </Card>
 
-        {/* Agent Score Card */}
-        <Card className="glass-card overflow-hidden md:col-span-1">
-          <div className="border-b bg-muted/30">
+        {/* Agent Priority Score */}
+        <Card className="border border-gray-200 bg-background overflow-hidden">
+          <div className="border-b border-gray-200 bg-[#F9FAFB]">
             <div className="px-6 py-3">
               <h2 className="text-lg font-semibold">Agent Priority Score</h2>
             </div>
@@ -151,20 +151,20 @@ export function AgentDetails({ agent }: AgentDetailsProps) {
       </div>
 
       {/* Agent Behavior */}
-      <Card className="glass-card overflow-hidden">
-        <div className="border-b bg-muted/30">
+      <Card className="border border-gray-200 bg-background md:col-span-2 overflow-hidden">
+        <div className="border-b border-gray-200 bg-[#F9FAFB]">
           <div className="px-6 py-3">
             <h2 className="text-lg font-semibold">Agent Behavior</h2>
           </div>
         </div>
         <div className="p-6">
-          <AgentBehavior />
+          <AgentBehavior agent={agent} />
         </div>
       </Card>
 
       {/* Agent's Knowledge Base */}
-      <Card className="glass-card overflow-hidden">
-        <div className="border-b bg-muted/30">
+      <Card className="border border-gray-200 bg-background overflow-hidden">
+        <div className="border-b border-gray-200 bg-[#F9FAFB]">
           <div className="px-6 py-3">
             <h2 className="text-lg font-semibold">Agent's Knowledge Base</h2>
           </div>
@@ -191,7 +191,7 @@ export function AgentDetails({ agent }: AgentDetailsProps) {
         </div>
       </Card>
 
-      {/* Agent History */}
+      {/* Recent Activity */}
       <AgentHistory />
     </div>
   )

@@ -127,7 +127,7 @@ export function AgentBehavior() {
   const savedSituations = currentStep?.situations.filter(s => s.saved) || []
 
   return (
-    <Card className="glass-card">
+    <Card className="border border-gray-200 bg-background overflow-hidden">
       <div className="flex h-[600px]">
         {/* Left sidebar with steps */}
         <div className="w-64 border-r bg-muted/30">
@@ -219,7 +219,7 @@ export function AgentBehavior() {
 
                   <div className="space-y-4">
                     {currentStep.situations.filter(s => !s.saved).map((situation) => (
-                      <Card key={situation.id} className="p-4 space-y-4">
+                      <Card key={situation.id} className="border border-gray-200 bg-background p-4 space-y-4">
                         <div className="flex items-start justify-between">
                           <div className="space-y-4 flex-1">
                             <div className="space-y-2">

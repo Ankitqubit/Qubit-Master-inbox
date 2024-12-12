@@ -5,11 +5,13 @@ import { Button } from "@/components/ui/button"
 import { AgentsTable } from "./agents-table"
 import { Bot, MessageSquare, Users, Plus } from "lucide-react"
 import { useState } from "react"
+import { CreateAgentDialog } from "./components/create-agent-dialog"
 
 export type AgentStatus = "all" | "active" | "inactive"
 
-export default function AiAgentsPage() {
+export default function AgentsPage() {
   const [activeTab, setActiveTab] = useState<AgentStatus>("all")
+  const [createDialogOpen, setCreateDialogOpen] = useState(false)
 
   return (
     <div className="flex-1 space-y-6 px-6 py-6">
@@ -19,9 +21,12 @@ export default function AiAgentsPage() {
           <h1 className="text-2xl font-semibold text-gray-900">AI Agents</h1>
           <p className="text-sm text-gray-500">Create and manage your AI agents</p>
         </div>
-        <Button className="bg-primary hover:bg-primary/90 transition-colors gap-2">
+        <Button
+          onClick={() => setCreateDialogOpen(true)}
+          className="flex items-center gap-2"
+        >
           <Plus className="h-4 w-4" />
-          Add Agent
+          Create New Agent
         </Button>
       </div>
 
@@ -105,6 +110,11 @@ export default function AiAgentsPage() {
           <AgentsTable activeTab={activeTab} />
         </div>
       </div>
+
+      <CreateAgentDialog
+        open={createDialogOpen}
+        onOpenChange={setCreateDialogOpen}
+      />
     </div>
   )
 }

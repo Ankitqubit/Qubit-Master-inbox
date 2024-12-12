@@ -11,92 +11,22 @@ import {
 import { MoreVertical, ChevronLeft, ChevronRight } from "lucide-react"
 import type { AgentStatus } from "./page"
 import { cn } from "@/lib/utils"
+import { useAgentsStore } from "./store/agents-store"
 import { useState } from "react"
-
-// Temporary data structure until we connect to the backend
-type Agent = {
-  id: string
-  name: string
-  description: string
-  status: "active" | "inactive"
-}
-
-const agents: Agent[] = [
-  {
-    id: "1",
-    name: "Customer Support Agent",
-    description: "Handles customer inquiries and support tickets",
-    status: "active"
-  },
-  {
-    id: "2",
-    name: "Sales Assistant",
-    description: "Assists with sales queries and lead qualification",
-    status: "inactive"
-  },
-  {
-    id: "3",
-    name: "Data Analysis Agent",
-    description: "Analyzes customer data and generates insights",
-    status: "active"
-  },
-  {
-    id: "4",
-    name: "Email Assistant",
-    description: "Helps draft and categorize emails",
-    status: "inactive"
-  },
-  {
-    id: "5",
-    name: "Marketing Bot",
-    description: "Assists with marketing campaigns and social media",
-    status: "active"
-  },
-  {
-    id: "6",
-    name: "HR Assistant",
-    description: "Helps with recruitment and employee onboarding",
-    status: "active"
-  },
-  {
-    id: "7",
-    name: "IT Support Agent",
-    description: "Handles IT-related issues and technical support",
-    status: "active"
-  },
-  {
-    id: "8",
-    name: "Finance Assistant",
-    description: "Assists with financial tasks and bookkeeping",
-    status: "inactive"
-  },
-  {
-    id: "9",
-    name: "Customer Service Agent",
-    description: "Handles customer complaints and feedback",
-    status: "active"
-  },
-  {
-    id: "10",
-    name: "Social Media Manager",
-    description: "Manages social media presence and content creation",
-    status: "active"
-  }
-]
 
 interface AgentsTableProps {
   activeTab: AgentStatus
 }
 
 export function AgentsTable({ activeTab }: AgentsTableProps) {
+  const agents = useAgentsStore((state) => state.agents)
+  const filteredAgents = activeTab === "all" 
+    ? agents 
+    : agents.filter(agent => agent.status === activeTab)
+
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 5
   
-  const filteredAgents = agents.filter(agent => {
-    if (activeTab === "all") return true
-    return agent.status === activeTab
-  })
-
   const totalPages = Math.ceil(filteredAgents.length / itemsPerPage)
   const startIndex = (currentPage - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage

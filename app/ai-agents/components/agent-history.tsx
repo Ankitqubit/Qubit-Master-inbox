@@ -103,7 +103,7 @@ function ActivityList({ items }: { items: ActivityItem[] }) {
   return (
     <div className="space-y-4">
       {items.map((item) => (
-        <div key={item.id} className="flex gap-4 items-start group hover:bg-muted/30 p-2 rounded-lg transition-colors">
+        <div key={item.id} className="flex gap-4 items-start group p-2">
           <div className="w-2 h-2 mt-2 rounded-full bg-primary flex-shrink-0" />
           <div className="flex-1 space-y-1">
             <div className="flex justify-between items-start">
@@ -122,8 +122,8 @@ function ActivityList({ items }: { items: ActivityItem[] }) {
 
 export function AgentHistory() {
   return (
-    <Card className="glass-card overflow-hidden">
-      <div className="border-b bg-muted/30">
+    <Card className="border border-gray-200 bg-background overflow-hidden">
+      <div className="border-b border-gray-200 bg-[#F9FAFB]">
         <div className="px-6 py-3 flex justify-between items-center">
           <h2 className="text-lg font-semibold">Recent Activity</h2>
           <Dialog>
