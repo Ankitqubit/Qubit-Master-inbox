@@ -122,28 +122,6 @@ function ActivityList({ items }: { items: ActivityItem[] }) {
 
 export function AgentHistory() {
   return (
-    <Card className="border border-gray-200 bg-background overflow-hidden">
-      <div className="border-b border-gray-200 bg-[#F9FAFB]">
-        <div className="px-6 py-3 flex justify-between items-center">
-          <h2 className="text-lg font-semibold">Recent Activity</h2>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="ghost" size="sm">View All</Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-2xl max-h-[80vh]">
-              <DialogHeader>
-                <DialogTitle className="text-xl font-semibold mb-4">Activity History</DialogTitle>
-              </DialogHeader>
-              <ScrollArea className="h-[calc(80vh-8rem)] pr-4 rounded-lg">
-                <ActivityList items={fullHistory} />
-              </ScrollArea>
-            </DialogContent>
-          </Dialog>
-        </div>
-      </div>
-      <div className="p-6">
-        <ActivityList items={recentActivity.slice(0, 2)} />
-      </div>
-    </Card>
+    <ActivityList items={recentActivity.slice(0, 2)} />
   )
 }

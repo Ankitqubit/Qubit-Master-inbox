@@ -12,6 +12,8 @@ import { Edit, PlayCircle, Database } from "lucide-react"
 import { AgentBehavior } from "./agent-behavior"
 import type { Agent } from "../data/agents"
 import { getAgentTypeLabel } from "../data/agents"
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 interface AgentDetailsProps {
   agent: Agent
@@ -26,7 +28,7 @@ export function AgentDetails({ agent }: AgentDetailsProps) {
   }
 
   return (
-    <div className="h-full p-8 space-y-8 bg-white">
+    <div className="flex-1 space-y-6 px-6 py-6 bg-transparent">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold text-gray-900">
           {agent.name}
@@ -44,23 +46,17 @@ export function AgentDetails({ agent }: AgentDetailsProps) {
         <Card className="border border-gray-200 bg-background md:col-span-2 overflow-hidden">
           <div className="border-b border-gray-200 bg-[#F9FAFB]">
             <div className="px-6 py-3 flex justify-between items-center">
-              <div>
-                <h2 className="text-lg font-semibold">Agent Details</h2>
-                <div className="text-sm font-medium text-primary mt-1">
-                  {getAgentTypeLabel(agent.type)}
+              <h2 className="text-lg font-semibold">Agent Details</h2>
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 text-green-600">
+                  <div className="h-1.5 w-1.5 rounded-full bg-green-600" />
+                  <span className="text-sm font-medium">Active</span>
                 </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <StatusBadge 
-                  status={agent.status} 
-                  onStatusChange={(newStatus) => {
-                    console.log("Status changed to:", newStatus)
-                  }} 
-                />
                 {!isEditing && (
                   <Button
                     variant="ghost"
                     size="icon"
+                    className="h-8 w-8"
                     onClick={() => setIsEditing(true)}
                   >
                     <Edit className="h-4 w-4" />
@@ -150,8 +146,8 @@ export function AgentDetails({ agent }: AgentDetailsProps) {
         </Card>
       </div>
 
-      {/* Agent Behavior */}
-      <Card className="border border-gray-200 bg-background md:col-span-2 overflow-hidden">
+      {/* Agent Behavior Section */}
+      <Card className="border border-gray-200 bg-background overflow-hidden">
         <div className="border-b border-gray-200 bg-[#F9FAFB]">
           <div className="px-6 py-3">
             <h2 className="text-lg font-semibold">Agent Behavior</h2>
@@ -192,7 +188,31 @@ export function AgentDetails({ agent }: AgentDetailsProps) {
       </Card>
 
       {/* Recent Activity */}
-      <AgentHistory />
+      <Card className="border border-gray-200 bg-background overflow-hidden">
+        <div className="border-b border-gray-200 bg-[#F9FAFB]">
+          <div className="px-6 py-3 flex justify-between items-center">
+            <h2 className="text-lg font-semibold">Recent Activity</h2>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="ghost" className="text-sm font-medium">
+                  View Full History
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-2xl max-h-[80vh]">
+                <DialogHeader>
+                  <DialogTitle className="text-xl font-semibold mb-4">Activity History</DialogTitle>
+                </DialogHeader>
+                <ScrollArea className="h-[calc(80vh-8rem)] pr-4 rounded-lg">
+                  <AgentHistory />
+                </ScrollArea>
+              </DialogContent>
+            </Dialog>
+          </div>
+        </div>
+        <div className="p-6">
+          <AgentHistory />
+        </div>
+      </Card>
     </div>
   )
 }
