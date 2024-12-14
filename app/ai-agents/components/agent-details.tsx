@@ -26,7 +26,7 @@ export function AgentDetails({ agent }: AgentDetailsProps) {
   }
 
   return (
-    <div className="h-full p-8 space-y-8 bg-white">
+    <div className="h-full space-y-8 bg-white px-6 py-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold text-gray-900">
           {agent.name}

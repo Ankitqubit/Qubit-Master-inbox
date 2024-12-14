@@ -109,6 +109,7 @@ export function SideNav() {
                   <Users className="h-4 w-4" />
                   View AI Agents
                 </Link>
+
                 <Link
                   href="/ai-agents/knowledge"
                   className={cn(
