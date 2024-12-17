@@ -4,139 +4,116 @@ export interface Contact {
   id: string
   name: string
   email: string
-  primaryCompany?: string
   phoneNumber?: string
-  contactOwner?: string
-  lastActivity?: string
-  avatarInitials?: string
-  avatarColor?: string
   title?: string
   department?: string
   country?: string
-  leadSource?: string
-  leadStatus?: string
-  lastContacted?: string
-  nextFollowUp?: string
-  tags?: string[]
+  primaryCompany?: string
+  company?: {
+    id: string
+    name: string
+    domain: string
+    logo: string
+  }
+  avatarInitials?: string
+  avatarColor?: string
   revenue?: string
   deals?: number
-  socialLinks?: {
-    linkedin?: string
-    twitter?: string
-  }
+  leadSource?: string
+  tasks?: {
+    id: string
+    title: string
+    description: string
+    dueDate: string
+    priority: string
+    assignedTo: string
+    status: string
+    createdBy: string
+    createdAt: string
+    details?: string
+  }[]
+  activities?: {
+    id: string
+    type: string
+    title: string
+    description: string
+    date: string
+    createdBy: string
+  }[]
+  lastActivity?: string
+  owner?: string
+  source?: string
+  dealsData?: {
+    id: string
+    name: string
+    amount: number
+    closingDate: string
+    status: string
+    stage: string
+  }[]
 }
 
 export const contacts: Contact[] = [
   {
-    id: '1',
-    name: 'Abigail J Smith',
-    email: 'abigailsmith.mobbin@gmail.com',
-    primaryCompany: 'Mobbin',
-    phoneNumber: '+1 (628) 267-9041',
-    contactOwner: 'Jane Doe',
-    lastActivity: 'Today',
-    avatarInitials: 'AS',
-    avatarColor: 'bg-blue-200',
-    title: 'Product Manager',
-    department: 'Product',
-    country: 'United States',
-    leadSource: 'Website',
-    leadStatus: 'Qualified',
-    lastContacted: '2 days ago',
-    nextFollowUp: 'Tomorrow',
-    tags: ['VIP', 'Product Demo'],
-    revenue: '$50,000',
-    deals: 2,
-    socialLinks: {
-      linkedin: 'linkedin.com/in/abigail-smith',
-      twitter: 'twitter.com/asmith'
-    }
-  },
-  {
-    id: '2',
-    name: 'Kerry Summers',
-    email: 'ksummers@morningstar.com',
-    primaryCompany: 'Morningstar, Inc',
-    phoneNumber: '482-7768',
-    contactOwner: 'Unassigned',
-    avatarColor: 'bg-red-200',
-    title: 'Sales Director',
-    department: 'Sales',
-    country: 'Canada',
-    leadSource: 'Referral',
-    leadStatus: 'New',
-    lastContacted: '5 days ago',
-    nextFollowUp: 'Next week',
-    tags: ['Sales Opportunity'],
-    revenue: '$25,000',
-    deals: 1
-  },
-  {
-    id: '3',
-    name: 'Michael Chen',
-    email: 'mchen@techcorp.com',
-    primaryCompany: 'TechCorp',
-    phoneNumber: '+1 (415) 555-0123',
-    contactOwner: 'Alex Johnson',
-    avatarInitials: 'MC',
-    avatarColor: 'bg-green-200',
-    title: 'CTO',
-    department: 'Engineering',
-    country: 'Singapore',
-    leadSource: 'Conference',
-    leadStatus: 'Contacted',
-    lastContacted: '1 week ago',
-    nextFollowUp: '3 days',
-    tags: ['Technical Decision Maker', 'Enterprise'],
-    revenue: '$100,000',
-    deals: 3,
-    socialLinks: {
-      linkedin: 'linkedin.com/in/mchen'
-    }
-  },
-  {
-    id: '4',
-    name: 'Sean Garcia',
-    email: 'sean.garcia@komscore.fr',
-    primaryCompany: 'Komscore',
-    phoneNumber: '714-767-1517',
-    contactOwner: 'Maria Rodriguez',
-    avatarInitials: 'SG',
-    avatarColor: 'bg-purple-200',
-    title: 'Marketing Manager',
-    department: 'Marketing',
-    country: 'France',
-    leadSource: 'Marketing Campaign',
-    leadStatus: 'Qualified',
-    lastContacted: '3 days ago',
-    nextFollowUp: '1 week',
-    tags: ['Marketing', 'EMEA'],
-    revenue: '$75,000',
-    deals: 2
-  },
-  {
-    id: '5',
-    name: 'Emma Wilson',
-    email: 'emma.w@datatech.co.uk',
-    primaryCompany: 'DataTech Solutions',
-    phoneNumber: '+44 20 7123 4567',
-    contactOwner: 'Tom Brown',
-    avatarInitials: 'EW',
-    avatarColor: 'bg-yellow-200',
-    title: 'Data Scientist',
-    department: 'Analytics',
-    country: 'United Kingdom',
-    leadSource: 'LinkedIn',
-    leadStatus: 'In Discussion',
-    lastContacted: 'Yesterday',
-    nextFollowUp: '2 days',
-    tags: ['AI/ML', 'Enterprise'],
-    revenue: '$150,000',
-    deals: 4,
-    socialLinks: {
-      linkedin: 'linkedin.com/in/ewilson',
-      twitter: 'twitter.com/emmaw'
-    }
+    id: "1",
+    name: "Jhon Smith",
+    email: "emailkuyahut@gmail.com",
+    phoneNumber: "(405) 555-0128",
+    title: "Content Writer",
+    department: "Marketing",
+    country: "United States",
+    company: {
+      id: "1",
+      name: "Google inc.",
+      domain: "google.com",
+      logo: "/google.svg"
+    },
+    lastActivity: "2 Jan 2020 at 09:00 AM",
+    owner: "Esther Howard",
+    revenue: "$ 5,000",
+    source: "Online store",
+    tasks: [
+      {
+        id: "1",
+        title: "Task created Esther Howard",
+        description: "Prepare quote for Jerome Bell",
+        dueDate: "Today, 12:00 PM",
+        priority: "High",
+        assignedTo: "Esther Howard",
+        status: "pending",
+        createdBy: "Esther Howard",
+        createdAt: "2021-12-12",
+        details: "She's interested in our new product line and wants our very best price. Please include a detailed breakdown of costs."
+      }
+    ],
+    activities: [
+      {
+        id: "1",
+        type: "task",
+        title: "Task created by Esther Howard",
+        description: "Prepare quote for Jerome Bell",
+        date: "12 December 2021",
+        createdBy: "Esther Howard"
+      }
+    ],
+    dealsData: [
+      {
+        id: "1",
+        name: "Web development",
+        amount: 120000,
+        closingDate: "18 Jan 2021",
+        status: "Contract sent",
+        stage: "proposal"
+      },
+      {
+        id: "2",
+        name: "Web development",
+        amount: 120000,
+        closingDate: "18 Jan 2021",
+        status: "Contract sent",
+        stage: "proposal"
+      }
+    ]
   }
 ]
 
