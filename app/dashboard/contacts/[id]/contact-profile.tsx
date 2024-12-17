@@ -18,105 +18,107 @@ interface ContactProfileProps {
 
 export default function ContactProfile({ contact }: ContactProfileProps) {
   return (
-    <div className="flex h-[calc(100vh-8rem)] gap-6 p-6 pl-[calc(60px+1.5rem)]">
-      {/* Left Panel - Contact Info */}
-      <ScrollArea className="h-full w-[300px] flex-shrink-0 rounded-lg border bg-white">
-        <div className="flex flex-col gap-4 p-4">
-          <Button variant="ghost" className="w-fit" onClick={() => window.history.back()}>
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Leads
-          </Button>
-          
-          <div className="flex flex-col items-center gap-2 pt-4">
-            <Avatar className="h-20 w-20">
-              <AvatarImage src={contact.avatarInitials ? undefined : '/avatars/default.png'} alt={contact.name} />
-              <AvatarFallback style={{ backgroundColor: contact.avatarColor }}>{contact.avatarInitials || contact.name[0]}</AvatarFallback>
-            </Avatar>
-            <h2 className="text-xl font-semibold">{contact.name}</h2>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <img src="/google.svg" alt="Google" className="h-4 w-4" />
-              <span>Google</span>
+    <div className="flex min-h-screen">
+      {/* Left Panel - Contact Info - Fixed */}
+      <div className="fixed left-[60px] top-[3.5rem] w-[300px] h-[calc(100vh-3.5rem)] bg-white border rounded-lg">
+        <ScrollArea className="h-full">
+          <div className="flex flex-col gap-4 p-4">
+            <Button variant="ghost" className="w-fit" onClick={() => window.history.back()}>
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Leads
+            </Button>
+            
+            <div className="flex flex-col items-center gap-2 pt-4">
+              <Avatar className="h-20 w-20">
+                <AvatarImage src={contact.avatarInitials ? undefined : '/avatars/default.png'} alt={contact.name} />
+                <AvatarFallback style={{ backgroundColor: contact.avatarColor }}>{contact.avatarInitials || contact.name[0]}</AvatarFallback>
+              </Avatar>
+              <h2 className="text-xl font-semibold">{contact.name}</h2>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <img src="/google.svg" alt="Google" className="h-4 w-4" />
+                <span>Google</span>
+              </div>
             </div>
+
+            {/* Action buttons */}
+            <div className="grid grid-cols-4 gap-2">
+              <Button variant="ghost" size="sm" className="flex flex-col items-center h-auto py-2">
+                <Plus className="h-4 w-4 mb-1" />
+                <span className="text-xs">Log</span>
+              </Button>
+              <Button variant="ghost" size="sm" className="flex flex-col items-center h-auto py-2">
+                <Mail className="h-4 w-4 mb-1" />
+                <span className="text-xs">Email</span>
+              </Button>
+              <Button variant="ghost" size="sm" className="flex flex-col items-center h-auto py-2">
+                <Phone className="h-4 w-4 mb-1" />
+                <span className="text-xs">Call</span>
+              </Button>
+              <Button variant="ghost" size="sm" className="flex flex-col items-center h-auto py-2">
+                <MoreHorizontal className="h-4 w-4 mb-1" />
+                <span className="text-xs">More</span>
+              </Button>
+            </div>
+
+            {/* Convert button */}
+            <Button className="w-full bg-[#F27A5E] hover:bg-[#f26a4a] text-white">
+              Convert to contact
+            </Button>
+
+            {/* Last activity */}
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Badge variant="outline" className="rounded-full flex items-center">
+                <div className="h-1.5 w-1.5 rounded-full bg-green-500 mr-2" />
+                Last activity : {contact.lastActivity || '2 Jan 2020 at 09:00 AM'}
+              </Badge>
+            </div>
+
+            {/* Info tabs */}
+            <Tabs defaultValue="leads" className="w-full">
+              <TabsList className="w-full grid grid-cols-2">
+                <TabsTrigger value="leads">Leads info</TabsTrigger>
+                <TabsTrigger value="address">Address info</TabsTrigger>
+              </TabsList>
+              <TabsContent value="leads" className="mt-4">
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label className="text-xs text-muted-foreground">Email</Label>
+                    <p className="text-sm">{contact.email}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs text-muted-foreground">Phone</Label>
+                    <p className="text-sm">{contact.phoneNumber}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs text-muted-foreground">Lead owner</Label>
+                    <p className="text-sm">{contact.contactOwner || 'Esther Howard'}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs text-muted-foreground">Job Title</Label>
+                    <p className="text-sm">{contact.title || 'Content Writer'}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs text-muted-foreground">Annual revenue</Label>
+                    <p className="text-sm">{contact.revenue || '$ 5,000'}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs text-muted-foreground">Lead source</Label>
+                    <p className="text-sm">{contact.leadSource || 'Online store'}</p>
+                  </div>
+                </div>
+              </TabsContent>
+              <TabsContent value="address">
+                <div className="space-y-4 pt-4">
+                  {/* Address fields will be added here */}
+                </div>
+              </TabsContent>
+            </Tabs>
           </div>
+        </ScrollArea>
+      </div>
 
-          {/* Action buttons */}
-          <div className="grid grid-cols-4 gap-2">
-            <Button variant="ghost" size="sm" className="flex flex-col items-center h-auto py-2">
-              <Plus className="h-4 w-4 mb-1" />
-              <span className="text-xs">Log</span>
-            </Button>
-            <Button variant="ghost" size="sm" className="flex flex-col items-center h-auto py-2">
-              <Mail className="h-4 w-4 mb-1" />
-              <span className="text-xs">Email</span>
-            </Button>
-            <Button variant="ghost" size="sm" className="flex flex-col items-center h-auto py-2">
-              <Phone className="h-4 w-4 mb-1" />
-              <span className="text-xs">Call</span>
-            </Button>
-            <Button variant="ghost" size="sm" className="flex flex-col items-center h-auto py-2">
-              <MoreHorizontal className="h-4 w-4 mb-1" />
-              <span className="text-xs">More</span>
-            </Button>
-          </div>
-
-          {/* Convert button */}
-          <Button className="w-full bg-[#F27A5E] hover:bg-[#f26a4a] text-white">
-            Convert to contact
-          </Button>
-
-          {/* Last activity */}
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Badge variant="outline" className="rounded-full flex items-center">
-              <div className="h-1.5 w-1.5 rounded-full bg-green-500 mr-2" />
-              Last activity : {contact.lastActivity || '2 Jan 2020 at 09:00 AM'}
-            </Badge>
-          </div>
-
-          {/* Info tabs */}
-          <Tabs defaultValue="leads" className="w-full">
-            <TabsList className="w-full grid grid-cols-2">
-              <TabsTrigger value="leads">Leads info</TabsTrigger>
-              <TabsTrigger value="address">Address info</TabsTrigger>
-            </TabsList>
-            <TabsContent value="leads" className="mt-4">
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label className="text-xs text-muted-foreground">Email</Label>
-                  <p className="text-sm">{contact.email}</p>
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-xs text-muted-foreground">Phone</Label>
-                  <p className="text-sm">{contact.phoneNumber}</p>
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-xs text-muted-foreground">Lead owner</Label>
-                  <p className="text-sm">{contact.contactOwner || 'Esther Howard'}</p>
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-xs text-muted-foreground">Job Title</Label>
-                  <p className="text-sm">{contact.title || 'Content Writer'}</p>
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-xs text-muted-foreground">Annual revenue</Label>
-                  <p className="text-sm">{contact.revenue || '$ 5,000'}</p>
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-xs text-muted-foreground">Lead source</Label>
-                  <p className="text-sm">{contact.leadSource || 'Online store'}</p>
-                </div>
-              </div>
-            </TabsContent>
-            <TabsContent value="address">
-              <div className="space-y-4 pt-4">
-                {/* Address fields will be added here */}
-              </div>
-            </TabsContent>
-          </Tabs>
-        </div>
-      </ScrollArea>
-
-      {/* Middle Panel - Content */}
-      <div className="flex-1">
+      {/* Middle Section - Scrollable */}
+      <div className="flex-1 ml-[360px] mr-[320px] min-h-[calc(100vh-3.5rem)] p-6">
         {/* Main Navigation Tabs */}
         <Tabs defaultValue="overview" className="w-full">
           <div className="border-b">
@@ -393,97 +395,99 @@ export default function ContactProfile({ contact }: ContactProfileProps) {
         </Tabs>
       </div>
 
-      {/* Right Panel - Additional Info */}
-      <ScrollArea className="h-full w-[300px] rounded-lg border bg-white p-4">
-        <div className="space-y-6">
-          <div>
-            <h3 className="mb-4 text-sm font-medium">Company Information</h3>
-            <Card>
-              <CardContent className="p-4">
-                <div className="space-y-2">
-                  <div>
-                    <Label className="text-xs font-medium text-muted-foreground">Industry</Label>
-                    <p className="text-sm">{contact.company?.industry || 'Not specified'}</p>
-                  </div>
-                  <div>
-                    <Label className="text-xs font-medium text-muted-foreground">Website</Label>
-                    <p className="text-sm">{contact.company?.domain || 'Not specified'}</p>
-                  </div>
-                  <div>
-                    <Label className="text-xs font-medium text-muted-foreground">Location</Label>
-                    <p className="text-sm">{contact.company?.location || contact.country || 'Not specified'}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-medium">Deals</h3>
-              <Button variant="ghost" size="sm" className="text-sm text-muted-foreground">
-                Close
-                <ChevronUp className="ml-1 h-4 w-4" />
-              </Button>
-            </div>
-            <div className="space-y-3">
-              <Button variant="outline" className="w-full justify-start gap-2">
-                <Plus className="h-4 w-4" />
-                Create new deal
-              </Button>
+      {/* Right Panel - Company Info - Fixed */}
+      <div className="fixed right-0 top-[3.5rem] w-[300px] h-[calc(100vh-3.5rem)] bg-white border rounded-lg">
+        <ScrollArea className="h-full">
+          <div className="p-4 space-y-6">
+            <div>
+              <h3 className="mb-4 text-sm font-medium">Company Information</h3>
               <Card>
-                <CardContent className="p-4 space-y-2">
-                  <div className="text-sm text-muted-foreground">Closing date: 18 Jan 2021</div>
-                  <Badge variant="secondary" className="bg-blue-50 text-blue-500 hover:bg-blue-50">Contract sent</Badge>
-                  <h4 className="font-medium">Web development</h4>
-                  <div className="text-lg font-semibold">$120,000</div>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardContent className="p-4 space-y-2">
-                  <div className="text-sm text-muted-foreground">Closing date: 18 Jan 2021</div>
-                  <Badge variant="secondary" className="bg-blue-50 text-blue-500 hover:bg-blue-50">Contract sent</Badge>
-                  <h4 className="font-medium">Web development</h4>
-                  <div className="text-lg font-semibold">$120,000</div>
+                <CardContent className="p-4">
+                  <div className="space-y-2">
+                    <div>
+                      <Label className="text-xs font-medium text-muted-foreground">Industry</Label>
+                      <p className="text-sm">{contact.company?.industry || 'Not specified'}</p>
+                    </div>
+                    <div>
+                      <Label className="text-xs font-medium text-muted-foreground">Website</Label>
+                      <p className="text-sm">{contact.company?.domain || 'Not specified'}</p>
+                    </div>
+                    <div>
+                      <Label className="text-xs font-medium text-muted-foreground">Location</Label>
+                      <p className="text-sm">{contact.company?.location || contact.country || 'Not specified'}</p>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             </div>
-          </div>
 
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <h3 className="text-sm font-medium">Tickets</h3>
-                <Badge variant="secondary" className="rounded-full">2</Badge>
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm font-medium">Deals</h3>
+                <Button variant="ghost" size="sm" className="text-sm text-muted-foreground">
+                  Close
+                  <ChevronUp className="ml-1 h-4 w-4" />
+                </Button>
               </div>
-              <Button variant="ghost" size="sm" className="text-sm text-muted-foreground">
-                View
-                <ChevronDown className="ml-1 h-4 w-4" />
-              </Button>
+              <div className="space-y-3">
+                <Button variant="outline" className="w-full justify-start gap-2">
+                  <Plus className="h-4 w-4" />
+                  Create new deal
+                </Button>
+                <Card>
+                  <CardContent className="p-4 space-y-2">
+                    <div className="text-sm text-muted-foreground">Closing date: 18 Jan 2021</div>
+                    <Badge variant="secondary" className="bg-blue-50 text-blue-500 hover:bg-blue-50">Contract sent</Badge>
+                    <h4 className="font-medium">Web development</h4>
+                    <div className="text-lg font-semibold">$120,000</div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="p-4 space-y-2">
+                    <div className="text-sm text-muted-foreground">Closing date: 18 Jan 2021</div>
+                    <Badge variant="secondary" className="bg-blue-50 text-blue-500 hover:bg-blue-50">Contract sent</Badge>
+                    <h4 className="font-medium">Web development</h4>
+                    <div className="text-lg font-semibold">$120,000</div>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
-          </div>
 
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-medium">Attachment</h3>
-              <Button variant="ghost" size="sm" className="text-sm text-muted-foreground">
-                View
-                <ChevronDown className="ml-1 h-4 w-4" />
-              </Button>
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <h3 className="text-sm font-medium">Tickets</h3>
+                  <Badge variant="secondary" className="rounded-full">2</Badge>
+                </div>
+                <Button variant="ghost" size="sm" className="text-sm text-muted-foreground">
+                  View
+                  <ChevronDown className="ml-1 h-4 w-4" />
+                </Button>
+              </div>
             </div>
-          </div>
 
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-medium">Playbook</h3>
-              <Button variant="ghost" size="sm" className="text-sm text-muted-foreground">
-                View
-                <ChevronDown className="ml-1 h-4 w-4" />
-              </Button>
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm font-medium">Attachment</h3>
+                <Button variant="ghost" size="sm" className="text-sm text-muted-foreground">
+                  View
+                  <ChevronDown className="ml-1 h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm font-medium">Playbook</h3>
+                <Button variant="ghost" size="sm" className="text-sm text-muted-foreground">
+                  View
+                  <ChevronDown className="ml-1 h-4 w-4" />
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-      </ScrollArea>
+        </ScrollArea>
+      </div>
     </div>
   )
 }
