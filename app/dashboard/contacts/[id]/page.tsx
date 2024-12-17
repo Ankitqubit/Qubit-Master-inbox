@@ -15,10 +15,8 @@ import {
   MessageSquare,
   Video,
   MoreHorizontal,
-  Building2,
-  ExternalLink,
 } from "lucide-react"
-import { contacts } from "../data/contacts"
+import { contacts, getContactById } from "../data/contacts"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,11 +24,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
+export const dynamic = 'force-dynamic'
+
 export default function ContactPage({ params }: { params: { id: string } }) {
   const router = useRouter()
   
   // Ensure we have the contact data
-  const contact = contacts.find((c) => c.id === params.id)
+  const contact = getContactById(params.id)
   
   if (!contact) {
     return (
@@ -107,109 +107,68 @@ export default function ContactPage({ params }: { params: { id: string } }) {
           </div>
         </div>
 
-        <Tabs defaultValue="overview" className="px-6">
+        <Tabs defaultValue="activity" className="px-6">
           <TabsList className="gap-4">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="activity">Activity</TabsTrigger>
+            <TabsTrigger value="notes">Notes</TabsTrigger>
             <TabsTrigger value="emails">Emails</TabsTrigger>
             <TabsTrigger value="calls">Calls</TabsTrigger>
             <TabsTrigger value="tasks">Tasks</TabsTrigger>
             <TabsTrigger value="meetings">Meetings</TabsTrigger>
-            <TabsTrigger value="notes">Notes</TabsTrigger>
-            <TabsTrigger value="ai-summary">AI Summary</TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
 
       {/* Main Content */}
       <div className="grid grid-cols-[1fr,300px] gap-6 p-6">
-        <Tabs defaultValue="overview" className="flex-1">
-          <TabsContent value="overview">
+        <Tabs defaultValue="activity" className="flex-1">
+          <TabsContent value="activity">
             <div className="space-y-6">
               {/* Activity Search */}
               <div className="flex items-center gap-2">
                 <div className="relative flex-1">
                   <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                  <Input placeholder="Search activities..." className="pl-8" />
+                  <Input placeholder="Search activity, notes, email and more" className="pl-8" />
                 </div>
                 <Button variant="outline">
-                  Filter activity (21/30)
+                  Filter activity (21/25)
                 </Button>
                 <Button variant="outline">
                   All users
                 </Button>
               </div>
 
-              {/* Timeline */}
+              {/* Upcoming Activity */}
               <div className="space-y-4">
-                <h3 className="font-semibold">Upcoming</h3>
+                <h3 className="font-semibold">Upcoming Activity</h3>
                 <div className="rounded-lg border bg-card p-4">
-                  <div className="flex items-start gap-2">
-                    <div className="h-2 w-2 mt-2 rounded-full bg-blue-500" />
+                  <div className="flex items-start gap-4">
+                    <div className="mt-1">
+                      <Calendar className="h-5 w-5 text-blue-500" />
+                    </div>
                     <div className="flex-1">
-                      <div className="flex items-center justify-between">
-                        <h4 className="font-medium">Follow up with {contact.name}</h4>
-                        <span className="text-sm text-gray-500">Due: Tomorrow</span>
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <h4 className="font-medium">Next follow up: {contact.nextFollowUp}</h4>
+                          <p className="text-sm text-gray-500 mt-1">
+                            Last contacted: {contact.lastContacted}
+                          </p>
+                        </div>
                       </div>
-                      <p className="text-sm text-gray-500">Assigned to {contact.contactOwner}</p>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </TabsContent>
 
-          <TabsContent value="activity">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
+              {/* Activity History */}
+              <div className="space-y-4">
                 <h3 className="font-semibold">Activity History</h3>
-                <Button>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Log Activity
-                </Button>
-              </div>
-              <div className="text-sm text-gray-500">
-                No activity history to show.
+                <div className="text-sm text-gray-500">No activity history to show.</div>
               </div>
             </div>
           </TabsContent>
 
-          <TabsContent value="ai-summary">
-            <div className="space-y-6">
-              <div className="rounded-lg border bg-card p-6">
-                <h3 className="text-lg font-semibold mb-4">AI Summary</h3>
-                <div className="space-y-4">
-                  <div>
-                    <h4 className="font-medium mb-2">Contact Overview</h4>
-                    <p className="text-gray-600">
-                      {contact.name} is a {contact.title} at {contact.primaryCompany}. They have been a 
-                      {contact.leadStatus?.toLowerCase()} lead since their first interaction. Based on their 
-                      engagement history, they show high potential for business opportunities.
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className="font-medium mb-2">Key Insights</h4>
-                    <ul className="list-disc list-inside space-y-2 text-gray-600">
-                      <li>Last contacted {contact.lastContacted}</li>
-                      <li>Has {contact.deals} active deals worth {contact.revenue}</li>
-                      <li>Primarily interested in product demonstrations and technical discussions</li>
-                      <li>Prefers communication via {contact.phoneNumber ? 'phone' : 'email'}</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="font-medium mb-2">Recommended Actions</h4>
-                    <ul className="list-disc list-inside space-y-2 text-gray-600">
-                      <li>Schedule follow-up meeting to discuss ongoing deals</li>
-                      <li>Share latest product updates and documentation</li>
-                      <li>Engage with technical team for detailed requirements</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </TabsContent>
-
-          {["emails", "calls", "tasks", "meetings", "notes"].map((tab) => (
+          {["notes", "emails", "calls", "tasks", "meetings"].map((tab) => (
             <TabsContent key={tab} value={tab}>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
@@ -227,68 +186,102 @@ export default function ContactPage({ params }: { params: { id: string } }) {
           ))}
         </Tabs>
 
-        {/* Sidebar */}
+        {/* Right Sidebar */}
         <div className="space-y-6">
           {/* Company Section */}
           <div className="rounded-lg border bg-card">
             <div className="p-4 border-b">
               <div className="flex items-center justify-between">
-                <h3 className="font-semibold">Companies (1)</h3>
-                <Button variant="ghost" size="sm">
-                  <Plus className="h-4 w-4" />
-                </Button>
+                <h3 className="font-semibold">Company</h3>
               </div>
             </div>
             <div className="p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium">Primary</span>
-                <span className="text-xs text-gray-500">Mobbin</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-gray-600">
-                <Building2 className="h-4 w-4" />
-                <a href={contact.primaryCompany} className="hover:underline">
-                  {contact.primaryCompany}
-                </a>
-                <ExternalLink className="h-3 w-3" />
-              </div>
-              <div className="mt-2 text-sm text-gray-600">
-                <div className="flex items-center gap-2">
-                  <Phone className="h-4 w-4" />
-                  <span>{contact.phoneNumber || '--'}</span>
+              <div className="flex items-center gap-3">
+                <Avatar className="h-8 w-8">
+                  <AvatarFallback className="bg-blue-100 text-blue-600">
+                    {contact.primaryCompany?.charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <h4 className="font-medium">{contact.primaryCompany}</h4>
+                  {contact.email && (
+                    <a href={`mailto:${contact.email}`} className="text-sm text-gray-500 hover:underline">
+                      {contact.email}
+                    </a>
+                  )}
                 </div>
               </div>
+              <div className="mt-4 space-y-2">
+                {contact.phoneNumber && (
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <Phone className="h-4 w-4" />
+                    <span>{contact.phoneNumber}</span>
+                  </div>
+                )}
+                {contact.email && (
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <Mail className="h-4 w-4" />
+                    <span>{contact.email}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Deals Section */}
+          <div className="rounded-lg border bg-card">
+            <div className="p-4 border-b">
+              <div className="flex items-center justify-between">
+                <h3 className="font-semibold">Deals</h3>
+                <span className="text-sm text-gray-500">{contact.deals || 0}</span>
+              </div>
+            </div>
+            <div className="p-4 space-y-4">
+              {contact.deals ? (
+                <div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-gray-500">Revenue</span>
+                    <span className="text-blue-600">{contact.revenue}</span>
+                  </div>
+                  <h4 className="font-medium mt-1">{contact.primaryCompany}</h4>
+                </div>
+              ) : (
+                <div className="text-sm text-gray-500">No deals yet</div>
+              )}
+              <Button variant="outline" className="w-full">
+                <Plus className="h-4 w-4 mr-2" />
+                Create new deal
+              </Button>
             </div>
           </div>
 
           {/* About Section */}
           <div className="rounded-lg border bg-card">
             <div className="p-4 border-b">
-              <h3 className="font-semibold">About this contact</h3>
+              <h3 className="font-semibold">About</h3>
             </div>
             <div className="p-4 space-y-4">
               <div>
-                <label className="text-sm font-medium">Email</label>
-                <div className="mt-1 text-sm text-gray-600">{contact.email}</div>
+                <label className="text-sm font-medium">Department</label>
+                <div className="mt-1 text-sm text-gray-600">{contact.department || '--'}</div>
               </div>
               <div>
-                <label className="text-sm font-medium">Phone number</label>
-                <div className="mt-1 text-sm text-gray-600">{contact.phoneNumber || '--'}</div>
+                <label className="text-sm font-medium">Country</label>
+                <div className="mt-1 text-sm text-gray-600">{contact.country || '--'}</div>
               </div>
               <div>
-                <label className="text-sm font-medium">Contact owner</label>
-                <div className="mt-1 text-sm text-gray-600">{contact.contactOwner}</div>
+                <label className="text-sm font-medium">Lead Source</label>
+                <div className="mt-1 text-sm text-gray-600">{contact.leadSource || '--'}</div>
               </div>
               <div>
-                <label className="text-sm font-medium">Lifecycle stage</label>
-                <div className="mt-1 text-sm text-gray-600">Opportunity</div>
+                <label className="text-sm font-medium">Lead Status</label>
+                <div className="mt-1 text-sm text-gray-600">{contact.leadStatus || '--'}</div>
               </div>
               <div>
-                <label className="text-sm font-medium">Lead status</label>
-                <div className="mt-1 text-sm text-gray-600">{contact.leadStatus}</div>
-              </div>
-              <div>
-                <label className="text-sm font-medium">Last contacted</label>
-                <div className="mt-1 text-sm text-gray-600">{contact.lastContacted || '--'}</div>
+                <label className="text-sm font-medium">Tags</label>
+                <div className="mt-1 text-sm text-gray-600">
+                  {contact.tags?.join(', ') || '--'}
+                </div>
               </div>
             </div>
           </div>

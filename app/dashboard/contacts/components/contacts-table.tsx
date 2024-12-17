@@ -1,7 +1,5 @@
 'use client'
 
-import { useState } from 'react'
-import Link from 'next/link'
 import {
   Table,
   TableBody,
@@ -10,109 +8,449 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu'
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  MoreHorizontal, 
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import {
+  ChevronRight,
+  ChevronLeft,
   Search,
   Filter,
   Save,
   Download,
   Pencil,
-  Link as LinkIcon,
+  MoreHorizontal,
+  Edit,
+  Mail,
+  CalendarPlus,
+  UserPlus,
+  Trash,
+  Eye,
+  MessageSquare,
+  FileText,
 } from 'lucide-react'
-import { contacts } from '../data/contacts'
+import Link from "next/link"
 import { Checkbox } from '@/components/ui/checkbox'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { useState, Fragment } from 'react'
 import { Badge } from '@/components/ui/badge'
-import { ContactProfileDialog } from './contact-profile-dialog'
+import { cn } from '@/lib/utils'
 
 export function ContactsTable() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedContacts, setSelectedContacts] = useState<string[]>([])
   const [currentPage, setCurrentPage] = useState(1)
-  const [itemsPerPage, setItemsPerPage] = useState(25)
-  const [currentView, setCurrentView] = useState('all')
-  const [selectedContact, setSelectedContact] = useState<Contact | null>(null)
+  const [itemsPerPage, setItemsPerPage] = useState(10)
 
-  const filteredContacts = contacts.filter(contact =>
+  const contacts = [
+    {
+      id: '1',
+      initials: 'AS',
+      initialsColor: 'bg-blue-100 text-blue-700',
+      name: 'Abigail J Smith',
+      email: 'abigailsmith.mobbin@gmail.com',
+      company: 'Mobbin',
+      title: 'Product Manager',
+      department: 'Product',
+      country: 'United States',
+      phone: '+1 (628) 267-9041',
+      owner: 'Jane Doe',
+      leadStatus: 'Hot',
+      leadSource: 'Direct',
+      lastActivity: 'Yesterday',
+      nextFollowup: 'Today',
+      createdDate: '2024-01-01',
+      modifiedDate: '2024-01-01',
+      linkedinUrl: 'https://www.linkedin.com/in/abigailjsmith',
+      twitterHandle: '@abigailjsmith',
+      industry: 'Software',
+      annualRevenue: '$100M',
+      employeeCount: '1000',
+      website: 'https://mobbin.com',
+      tags: ['New', 'Prospect'],
+    },
+    {
+      id: '2',
+      initials: 'KS',
+      initialsColor: 'bg-pink-100 text-pink-700',
+      name: 'Kerry Summers',
+      email: 'ksummers@morningstar.com',
+      company: 'Morningstar, Inc',
+      title: 'Sales Director',
+      department: 'Sales',
+      country: 'Canada',
+      phone: '482-7768',
+      owner: 'Unassigned',
+      leadStatus: 'Warm',
+      leadSource: 'Referral',
+      lastActivity: 'Last Week',
+      nextFollowup: 'Not Scheduled',
+      createdDate: '2024-01-01',
+      modifiedDate: '2024-01-01',
+      linkedinUrl: 'https://www.linkedin.com/in/kerrysummers',
+      twitterHandle: '@kerrysummers',
+      industry: 'Finance',
+      annualRevenue: '$500M',
+      employeeCount: '5000',
+      website: 'https://morningstar.com',
+      tags: ['Existing', 'Customer'],
+    },
+    {
+      id: '3',
+      initials: 'MC',
+      initialsColor: 'bg-green-100 text-green-700',
+      name: 'Michael Chen',
+      email: 'mchen@techcorp.com',
+      company: 'TechCorp',
+      title: 'CTO',
+      department: 'Engineering',
+      country: 'Singapore',
+      phone: '+1 (415) 555-0123',
+      owner: 'Alex Johnson',
+      leadStatus: 'Cold',
+      leadSource: 'Social Media',
+      lastActivity: 'Never',
+      nextFollowup: 'Not Scheduled',
+      createdDate: '2024-01-01',
+      modifiedDate: '2024-01-01',
+      linkedinUrl: 'https://www.linkedin.com/in/michaelchen',
+      twitterHandle: '@michaelchen',
+      industry: 'Technology',
+      annualRevenue: '$1B',
+      employeeCount: '10000',
+      website: 'https://techcorp.com',
+      tags: ['New', 'Lead'],
+    },
+    {
+      id: '4',
+      initials: 'SG',
+      initialsColor: 'bg-purple-100 text-purple-700',
+      name: 'Sean Garcia',
+      email: 'sean.garcia@komscore.fr',
+      company: 'Komscore',
+      title: 'Marketing Manager',
+      department: 'Marketing',
+      country: 'France',
+      phone: '714-767-1517',
+      owner: 'Maria Rodriguez',
+      leadStatus: 'New',
+      leadSource: 'Direct',
+      lastActivity: 'Yesterday',
+      nextFollowup: 'Today',
+      createdDate: '2024-01-01',
+      modifiedDate: '2024-01-01',
+      linkedinUrl: 'https://www.linkedin.com/in/seangarcia',
+      twitterHandle: '@seangarcia',
+      industry: 'Software',
+      annualRevenue: '$50M',
+      employeeCount: '500',
+      website: 'https://komscore.fr',
+      tags: ['New', 'Prospect'],
+    },
+    {
+      id: '5',
+      initials: 'EW',
+      initialsColor: 'bg-yellow-100 text-yellow-700',
+      name: 'Emma Wilson',
+      email: 'emma.w@datatech.co.uk',
+      company: 'DataTech Solutions',
+      title: 'Data Scientist',
+      department: 'Analytics',
+      country: 'United Kingdom',
+      phone: '+44 20 7123 4567',
+      owner: 'Tom Brown',
+      leadStatus: 'Warm',
+      leadSource: 'Referral',
+      lastActivity: 'Last Week',
+      nextFollowup: 'Not Scheduled',
+      createdDate: '2024-01-01',
+      modifiedDate: '2024-01-01',
+      linkedinUrl: 'https://www.linkedin.com/in/emmawilson',
+      twitterHandle: '@emmawilson',
+      industry: 'Technology',
+      annualRevenue: '$200M',
+      employeeCount: '2000',
+      website: 'https://datatech.co.uk',
+      tags: ['Existing', 'Customer'],
+    },
+    {
+      id: '6',
+      initials: 'DL',
+      initialsColor: 'bg-purple-100 text-purple-700',
+      name: 'David Lee',
+      email: 'david.lee@techstart.io',
+      company: 'TechStart',
+      title: 'Frontend Developer',
+      department: 'Engineering',
+      country: 'Canada',
+      phone: '+1 (416) 555-0123',
+      owner: 'Alex Johnson',
+      leadStatus: 'New',
+      leadSource: 'Direct',
+      lastActivity: 'Yesterday',
+      nextFollowup: 'Today',
+      createdDate: '2024-01-01',
+      modifiedDate: '2024-01-01',
+      linkedinUrl: 'https://www.linkedin.com/in/davidlee',
+      twitterHandle: '@davidlee',
+      industry: 'Technology',
+      annualRevenue: '$100M',
+      employeeCount: '1000',
+      website: 'https://techstart.io',
+      tags: ['New', 'Lead'],
+    },
+    {
+      id: '7',
+      initials: 'RK',
+      initialsColor: 'bg-indigo-100 text-indigo-700',
+      name: 'Rachel Kumar',
+      email: 'rachel.k@innovate.in',
+      company: 'Innovate Tech',
+      title: 'Innovation Lead',
+      department: 'R&D',
+      country: 'India',
+      phone: '+91 98765 43210',
+      owner: 'Sarah Wilson',
+      leadStatus: 'Hot',
+      leadSource: 'Conference',
+      lastActivity: 'Today',
+      nextFollowup: 'Tomorrow',
+      createdDate: '2024-01-02',
+      modifiedDate: '2024-01-02',
+      linkedinUrl: 'https://www.linkedin.com/in/rachelkumar',
+      twitterHandle: '@rachelkumar',
+      industry: 'Technology',
+      annualRevenue: '$75M',
+      employeeCount: '750',
+      website: 'https://innovate.in',
+      tags: ['VIP', 'Partner'],
+    },
+    {
+      id: '8',
+      initials: 'JB',
+      initialsColor: 'bg-red-100 text-red-700',
+      name: 'James Brown',
+      email: 'j.brown@fintech.co',
+      company: 'FinTech Solutions',
+      title: 'Financial Analyst',
+      department: 'Finance',
+      country: 'Australia',
+      phone: '+61 2 8765 4321',
+      owner: 'Mike Thompson',
+      leadStatus: 'Warm',
+      leadSource: 'Website',
+      lastActivity: '2 days ago',
+      nextFollowup: 'Next Week',
+      createdDate: '2024-01-03',
+      modifiedDate: '2024-01-03',
+      linkedinUrl: 'https://www.linkedin.com/in/jamesbrown',
+      twitterHandle: '@jbrown',
+      industry: 'Finance',
+      annualRevenue: '$150M',
+      employeeCount: '1200',
+      website: 'https://fintech.co',
+      tags: ['Prospect', 'Finance'],
+    },
+    {
+      id: '9',
+      initials: 'ML',
+      initialsColor: 'bg-emerald-100 text-emerald-700',
+      name: 'Maria Lopez',
+      email: 'maria.lopez@healthtech.es',
+      company: 'HealthTech',
+      title: 'Healthcare Solutions Director',
+      department: 'Healthcare',
+      country: 'Spain',
+      phone: '+34 612 345 678',
+      owner: 'David Chen',
+      leadStatus: 'Cold',
+      leadSource: 'LinkedIn',
+      lastActivity: '1 week ago',
+      nextFollowup: 'Next Month',
+      createdDate: '2024-01-04',
+      modifiedDate: '2024-01-04',
+      linkedinUrl: 'https://www.linkedin.com/in/marialopez',
+      twitterHandle: '@mlopez',
+      industry: 'Healthcare',
+      annualRevenue: '$300M',
+      employeeCount: '3000',
+      website: 'https://healthtech.es',
+      tags: ['Healthcare', 'Enterprise'],
+    },
+    {
+      id: '10',
+      initials: 'AK',
+      initialsColor: 'bg-orange-100 text-orange-700',
+      name: 'Anna Kim',
+      email: 'anna.kim@edutech.kr',
+      company: 'EduTech Korea',
+      title: 'Education Technology Lead',
+      department: 'Education',
+      country: 'South Korea',
+      phone: '+82 10 9876 5432',
+      owner: 'Lisa Park',
+      leadStatus: 'Hot',
+      leadSource: 'Partner Referral',
+      lastActivity: 'Today',
+      nextFollowup: 'Tomorrow',
+      createdDate: '2024-01-05',
+      modifiedDate: '2024-01-05',
+      linkedinUrl: 'https://www.linkedin.com/in/annakim',
+      twitterHandle: '@annakim',
+      industry: 'Education',
+      annualRevenue: '$80M',
+      employeeCount: '800',
+      website: 'https://edutech.kr',
+      tags: ['Education', 'Partner'],
+    },
+  ]
+
+  const filteredContacts = contacts.filter((contact) =>
     contact.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     contact.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    contact.phoneNumber?.toLowerCase().includes(searchQuery.toLowerCase())
+    contact.phone.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
-  const handleSelectAll = () => {
-    if (selectedContacts.length === filteredContacts.length) {
-      setSelectedContacts([])
+  const totalPages = Math.ceil(filteredContacts.length / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const currentContacts = filteredContacts.slice(startIndex, endIndex)
+
+  const handleSelectAll = (checked: boolean) => {
+    if (checked) {
+      setSelectedContacts(currentContacts.map((contact) => contact.id))
     } else {
-      setSelectedContacts(filteredContacts.map(contact => contact.id))
+      setSelectedContacts([])
     }
   }
 
   const handleSelectContact = (id: string) => {
-    if (selectedContacts.includes(id)) {
-      setSelectedContacts(selectedContacts.filter(contactId => contactId !== id))
-    } else {
-      setSelectedContacts([...selectedContacts, id])
-    }
+    setSelectedContacts((prev) => {
+      if (prev.includes(id)) {
+        return prev.filter((contactId) => contactId !== id)
+      }
+      return [...prev, id]
+    })
+  }
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
   }
 
   return (
-    <div className="space-y-4">
-      {/* Fixed width container */}
-      <div className="w-full max-w-[calc(100vw-120px)]"> {/* 60px nav + 60px padding */}
-        <div className="flex items-center justify-between mb-6">
-          <Tabs defaultValue="all" className="w-full">
-            <div className="flex items-center justify-between">
-              <TabsList>
-                <TabsTrigger value="all" onClick={() => setCurrentView('all')}>All Contacts</TabsTrigger>
-                <TabsTrigger value="my" onClick={() => setCurrentView('my')}>My Contacts</TabsTrigger>
-                <TabsTrigger value="unassigned" onClick={() => setCurrentView('unassigned')}>Unassigned</TabsTrigger>
-                <TabsTrigger value="recently" onClick={() => setCurrentView('recently')}>Recently Created</TabsTrigger>
-                <TabsTrigger value="viewed" onClick={() => setCurrentView('viewed')}>Recently Viewed</TabsTrigger>
-              </TabsList>
-              <div className="flex items-center space-x-2">
+    <div className="space-y-6">
+      <Tabs defaultValue="all" className="w-full">
+        <div className="flex items-center justify-between mb-4">
+          <TabsList className="bg-[#f3f4f6] p-1 rounded-lg">
+            <TabsTrigger
+              value="all"
+              className="rounded-md px-4 py-2 text-sm data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm"
+            >
+              All Contacts
+            </TabsTrigger>
+            <TabsTrigger
+              value="my"
+              className="rounded-md px-4 py-2 text-sm data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm"
+            >
+              My Contacts
+            </TabsTrigger>
+            <TabsTrigger
+              value="unassigned"
+              className="rounded-md px-4 py-2 text-sm data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm"
+            >
+              Unassigned
+            </TabsTrigger>
+            <TabsTrigger
+              value="recently"
+              className="rounded-md px-4 py-2 text-sm data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm"
+            >
+              Recently Created
+            </TabsTrigger>
+            <TabsTrigger
+              value="viewed"
+              className="rounded-md px-4 py-2 text-sm data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm"
+            >
+              Recently Viewed
+            </TabsTrigger>
+          </TabsList>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm">
+              Data Quality
+            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm">
-                  Data Quality
+                  Actions
                 </Button>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm">
-                      Actions
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem>Delete Selected</DropdownMenuItem>
-                    <DropdownMenuItem>Export Selected</DropdownMenuItem>
-                    <DropdownMenuItem>Assign Owner</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                <Button variant="outline" size="sm">
-                  Import
-                </Button>
-                <Button size="sm">
-                  Create contact
-                </Button>
-              </div>
-            </div>
-          </Tabs>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-[200px]">
+                <DropdownMenuItem>
+                  <Eye className="mr-2 h-4 w-4" />
+                  View Details
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Edit className="mr-2 h-4 w-4" />
+                  Edit Contact
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Mail className="mr-2 h-4 w-4" />
+                  Send Email
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <CalendarPlus className="mr-2 h-4 w-4" />
+                  Schedule Meeting
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <MessageSquare className="mr-2 h-4 w-4" />
+                  Send Message
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <FileText className="mr-2 h-4 w-4" />
+                  Add Note
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <UserPlus className="mr-2 h-4 w-4" />
+                  Add to Campaign
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Download className="mr-2 h-4 w-4" />
+                  Export Contact
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="text-red-600">
+                  <Trash className="mr-2 h-4 w-4" />
+                  Delete Contact
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <Button variant="outline" size="sm">
+              Import
+            </Button>
+            <Button size="sm" className="bg-blue-600 text-white hover:bg-blue-700">
+              Create contact
+            </Button>
+          </div>
         </div>
 
-        <div className="flex items-center space-x-2 mb-4">
+        <div className="flex items-center gap-2 mb-4">
           <div className="relative flex-1">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search contacts..."
-              className="pl-8"
+              className="pl-9"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -131,170 +469,155 @@ export function ContactsTable() {
           </Button>
         </div>
 
-        {/* Scrollable table container */}
-        <div className="rounded-lg bg-white border border-gray-200">
-          <div className="overflow-x-auto">
-            <div className="min-w-max">
-              <Table>
-                <TableHeader>
-                  <TableRow className="border-b border-gray-200">
-                    <TableHead className="w-12 bg-gradient-to-b from-[#F9FAFB] to-[#F3F4F6] sticky left-0 border-r border-gray-200">
-                      <Checkbox
-                        checked={selectedContacts.length === filteredContacts.length}
-                        onCheckedChange={handleSelectAll}
-                      />
-                    </TableHead>
-                    <TableHead className="min-w-[200px] bg-gradient-to-b from-[#F9FAFB] to-[#F3F4F6] sticky left-12 border-r border-gray-200">Name</TableHead>
-                    <TableHead className="min-w-[200px] bg-gradient-to-b from-[#F9FAFB] to-[#F3F4F6]">Email</TableHead>
-                    <TableHead className="min-w-[150px] bg-gradient-to-b from-[#F9FAFB] to-[#F3F4F6]">Primary Company</TableHead>
-                    <TableHead className="min-w-[150px] bg-gradient-to-b from-[#F9FAFB] to-[#F3F4F6]">Title</TableHead>
-                    <TableHead className="min-w-[150px] bg-gradient-to-b from-[#F9FAFB] to-[#F3F4F6]">Department</TableHead>
-                    <TableHead className="min-w-[150px] bg-gradient-to-b from-[#F9FAFB] to-[#F3F4F6]">Country</TableHead>
-                    <TableHead className="min-w-[150px] bg-gradient-to-b from-[#F9FAFB] to-[#F3F4F6]">Phone</TableHead>
-                    <TableHead className="min-w-[150px] bg-gradient-to-b from-[#F9FAFB] to-[#F3F4F6]">Contact Owner</TableHead>
-                    <TableHead className="min-w-[150px] bg-gradient-to-b from-[#F9FAFB] to-[#F3F4F6]">Lead Source</TableHead>
-                    <TableHead className="min-w-[150px] bg-gradient-to-b from-[#F9FAFB] to-[#F3F4F6]">Lead Status</TableHead>
-                    <TableHead className="min-w-[150px] bg-gradient-to-b from-[#F9FAFB] to-[#F3F4F6]">Last Contacted</TableHead>
-                    <TableHead className="min-w-[150px] bg-gradient-to-b from-[#F9FAFB] to-[#F3F4F6]">Next Follow Up</TableHead>
-                    <TableHead className="min-w-[150px] bg-gradient-to-b from-[#F9FAFB] to-[#F3F4F6]">Tags</TableHead>
-                    <TableHead className="min-w-[150px] bg-gradient-to-b from-[#F9FAFB] to-[#F3F4F6]">Revenue</TableHead>
-                    <TableHead className="min-w-[100px] bg-gradient-to-b from-[#F9FAFB] to-[#F3F4F6]">Deals</TableHead>
-                    <TableHead className="min-w-[150px] bg-gradient-to-b from-[#F9FAFB] to-[#F3F4F6]">Social Links</TableHead>
-                    <TableHead className="w-12 bg-gradient-to-b from-[#F9FAFB] to-[#F3F4F6] sticky right-0 border-l border-gray-200">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredContacts.map((contact) => (
-                    <TableRow key={contact.id} className="border-b border-gray-200 hover:bg-gray-50/50">
-                      <TableCell className="bg-white sticky left-0 border-r border-gray-200">
-                        <Checkbox
-                          checked={selectedContacts.includes(contact.id)}
-                          onCheckedChange={() => handleSelectContact(contact.id)}
-                        />
-                      </TableCell>
-                      <TableCell className="bg-white sticky left-12 border-r border-gray-200">
-                        <div className="flex items-center gap-2">
-                          <Avatar className="h-8 w-8">
-                            <AvatarFallback className={contact.avatarColor}>
-                              {contact.avatarInitials || contact.name.substring(0, 2)}
-                            </AvatarFallback>
-                          </Avatar>
-                          <Link
-                            href={`/dashboard/contacts/${contact.id}`}
-                            className="text-blue-500 font-medium hover:underline"
-                          >
-                            {contact.name}
-                          </Link>
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-gray-600">{contact.email}</TableCell>
-                      <TableCell className="text-gray-600">{contact.primaryCompany}</TableCell>
-                      <TableCell className="text-gray-600">{contact.title}</TableCell>
-                      <TableCell className="text-gray-600">{contact.department}</TableCell>
-                      <TableCell className="text-gray-600">{contact.country}</TableCell>
-                      <TableCell className="text-gray-600">{contact.phoneNumber}</TableCell>
-                      <TableCell className="text-gray-600">{contact.contactOwner}</TableCell>
-                      <TableCell className="text-gray-600">{contact.leadSource}</TableCell>
-                      <TableCell>
-                        {contact.leadStatus && (
-                          <Badge variant="outline" className="bg-gray-50 text-gray-700">
-                            {contact.leadStatus}
-                          </Badge>
-                        )}
-                      </TableCell>
-                      <TableCell className="text-gray-600">{contact.lastContacted}</TableCell>
-                      <TableCell className="text-gray-600">{contact.nextFollowUp}</TableCell>
-                      <TableCell>
-                        <div className="flex gap-1 flex-wrap">
-                          {contact.tags?.map((tag) => (
-                            <Badge key={tag} variant="outline" className="bg-gray-50 text-gray-700">
-                              {tag}
-                            </Badge>
-                          ))}
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-gray-600">{contact.revenue}</TableCell>
-                      <TableCell className="text-gray-600">{contact.deals}</TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          {contact.socialLinks?.linkedin && (
-                            <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-500 hover:text-gray-900">
-                              <LinkIcon className="h-4 w-4" />
-                            </Button>
-                          )}
-                          {contact.socialLinks?.twitter && (
-                            <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-500 hover:text-gray-900">
-                              <LinkIcon className="h-4 w-4" />
-                            </Button>
-                          )}
-                        </div>
-                      </TableCell>
-                      <TableCell className="bg-white sticky right-0 border-l border-gray-200">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-500 hover:text-gray-900">
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem>Edit</DropdownMenuItem>
-                            <DropdownMenuItem>View Details</DropdownMenuItem>
-                            <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </div>
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-muted/50">
+                <TableHead className="w-[40px]">
+                  <Checkbox
+                    checked={selectedContacts.length === currentContacts.length}
+                    onCheckedChange={handleSelectAll}
+                  />
+                </TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Primary Company</TableHead>
+                <TableHead>Title</TableHead>
+                <TableHead>Department</TableHead>
+                <TableHead>Country</TableHead>
+                <TableHead>Phone</TableHead>
+                <TableHead>Contact Owner</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {currentContacts.map((contact) => (
+                <TableRow key={contact.id} className="hover:bg-muted/50">
+                  <TableCell className="w-[40px]">
+                    <Checkbox
+                      checked={selectedContacts.includes(contact.id)}
+                      onCheckedChange={() => handleSelectContact(contact.id)}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${contact.initialsColor}`}>
+                        {contact.initials}
+                      </div>
+                      <Link 
+                        href={`/dashboard/contacts/${contact.id}`}
+                        className="font-medium text-blue-600 hover:underline cursor-pointer"
+                      >
+                        {contact.name}
+                      </Link>
+                    </div>
+                  </TableCell>
+                  <TableCell>{contact.email}</TableCell>
+                  <TableCell>{contact.company}</TableCell>
+                  <TableCell>{contact.title}</TableCell>
+                  <TableCell>{contact.department}</TableCell>
+                  <TableCell>{contact.country}</TableCell>
+                  <TableCell>{contact.phone}</TableCell>
+                  <TableCell>{contact.owner}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
 
-        <ContactProfileDialog
-          contact={selectedContact}
-          open={selectedContact !== null}
-          onOpenChange={(open) => !open && setSelectedContact(null)}
-        />
+        <div className="flex items-center justify-between px-4 py-4">
+          <div className="flex items-center gap-2">
+            <p className="text-sm text-muted-foreground">
+              Showing {startIndex + 1} to {Math.min(endIndex, filteredContacts.length)} of {filteredContacts.length} entries
+            </p>
+            <Select
+              value={itemsPerPage.toString()}
+              onValueChange={(value) => {
+                setItemsPerPage(parseInt(value))
+                setCurrentPage(1)
+              }}
+            >
+              <SelectTrigger className="h-8 w-[70px]">
+                <SelectValue placeholder={itemsPerPage} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="5">5</SelectItem>
+                <SelectItem value="10">10</SelectItem>
+                <SelectItem value="20">20</SelectItem>
+                <SelectItem value="50">50</SelectItem>
+                <SelectItem value="100">100</SelectItem>
+              </SelectContent>
+            </Select>
+            <span className="text-sm text-muted-foreground">per page</span>
+          </div>
 
-        <div className="flex items-center justify-between mt-4">
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center gap-1">
             <Button
               variant="outline"
-              size="sm"
+              size="icon"
+              className="h-8 w-8"
               onClick={() => setCurrentPage(currentPage - 1)}
               disabled={currentPage === 1}
             >
               <ChevronLeft className="h-4 w-4" />
             </Button>
+            
+            {Array.from({ length: totalPages }, (_, i) => i + 1)
+              .filter(page => {
+                if (totalPages <= 7) return true;
+                if (page === 1 || page === totalPages) return true;
+                if (page >= currentPage - 1 && page <= currentPage + 1) return true;
+                if (page === 2 && currentPage <= 4) return true;
+                if (page === totalPages - 1 && currentPage >= totalPages - 3) return true;
+                return false;
+              })
+              .map((page, index, array) => {
+                if (index > 0 && array[index - 1] !== page - 1) {
+                  return (
+                    <Fragment key={`ellipsis-${page}`}>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8"
+                        disabled
+                      >
+                        ...
+                      </Button>
+                      <Button
+                        variant={currentPage === page ? "default" : "outline"}
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={() => setCurrentPage(page)}
+                      >
+                        {page}
+                      </Button>
+                    </Fragment>
+                  );
+                }
+                return (
+                  <Button
+                    key={page}
+                    variant={currentPage === page ? "default" : "outline"}
+                    size="icon"
+                    className="h-8 w-8"
+                    onClick={() => setCurrentPage(page)}
+                  >
+                    {page}
+                  </Button>
+                );
+              })}
+
             <Button
               variant="outline"
-              size="sm"
+              size="icon"
+              className="h-8 w-8"
               onClick={() => setCurrentPage(currentPage + 1)}
-              disabled={currentPage * itemsPerPage >= filteredContacts.length}
+              disabled={currentPage === totalPages}
             >
               <ChevronRight className="h-4 w-4" />
             </Button>
-            <span className="text-sm text-muted-foreground">
-              Page {currentPage} of{' '}
-              {Math.ceil(filteredContacts.length / itemsPerPage)}
-            </span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <span className="text-sm text-muted-foreground">Rows per page</span>
-            <select
-              className="h-8 w-16 rounded-md border border-input bg-background px-2"
-              value={itemsPerPage}
-              onChange={(e) => setItemsPerPage(Number(e.target.value))}
-            >
-              <option value="10">10</option>
-              <option value="25">25</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
-            </select>
           </div>
         </div>
-      </div>
+      </Tabs>
     </div>
   )
 }

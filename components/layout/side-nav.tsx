@@ -29,19 +29,22 @@ export function SideNav() {
       title: "Dashboard",
       icon: <LayoutDashboard className="h-5 w-5" />,
       href: "/dashboard",
-      tooltip: "Dashboard"
+      tooltip: "Dashboard",
+      isActive: (path: string) => path.startsWith('/dashboard')
     },
     {
       title: "AI Agents",
       icon: <Bot className="h-5 w-5" />,
       href: "/ai-agents",
-      tooltip: "AI Agents"
+      tooltip: "AI Agents",
+      isActive: (path: string) => path.startsWith('/ai-agents')
     },
     {
       title: "Settings",
       icon: <Settings className="h-5 w-5" />,
       href: "/settings",
-      tooltip: "Settings"
+      tooltip: "Settings",
+      isActive: (path: string) => path.startsWith('/settings')
     }
   ]
 
@@ -57,8 +60,7 @@ export function SideNav() {
                   href={item.href}
                   className={cn(
                     "mb-4 flex h-10 w-10 items-center justify-center rounded-lg hover:bg-gray-100",
-                    pathname === item.href && "bg-gray-100",
-                    isAiAgentsPath && item.href === "/ai-agents" && "bg-gray-100"
+                    item.isActive(pathname) && "bg-gray-100"
                   )}
                 >
                   {item.icon}

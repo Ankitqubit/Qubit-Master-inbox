@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { type Contact } from "../data/contacts"
 import {
   Dialog,
   DialogContent,
@@ -27,7 +28,6 @@ import {
   FileText,
   Activity,
 } from "lucide-react"
-import type { Contact } from "../data/contacts"
 
 interface ContactProfileDialogProps {
   contact: Contact | null
