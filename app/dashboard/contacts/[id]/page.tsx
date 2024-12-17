@@ -15,7 +15,7 @@ export default async function ContactPage({
 
   if (!contact) {
     return (
-      <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
+      <div className="flex-1 p-6 pl-[calc(60px+1.5rem)]">
         <div className="flex items-center space-x-2">
           <Link
             href="/dashboard/contacts"
@@ -33,7 +33,7 @@ export default async function ContactPage({
   }
 
   return (
-    <div className="flex-1">
+    <div className="flex-1 min-h-0 bg-gray-50">
       <ContactProfile contact={contact} />
     </div>
   )

@@ -18,10 +18,10 @@ interface ContactProfileProps {
 
 export default function ContactProfile({ contact }: ContactProfileProps) {
   return (
-    <div className="flex h-full w-full gap-4 p-4">
+    <div className="flex h-[calc(100vh-8rem)] gap-6 p-6 pl-[calc(60px+1.5rem)]">
       {/* Left Panel - Contact Info */}
-      <ScrollArea className="h-full w-[300px] rounded-lg border bg-white p-4">
-        <div className="flex flex-col gap-4">
+      <ScrollArea className="h-full w-[300px] flex-shrink-0 rounded-lg border bg-white">
+        <div className="flex flex-col gap-4 p-4">
           <Button variant="ghost" className="w-fit" onClick={() => window.history.back()}>
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Leads
