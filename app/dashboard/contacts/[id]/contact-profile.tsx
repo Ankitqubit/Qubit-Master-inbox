@@ -4,40 +4,62 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent } from "@/components/ui/card"
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Mail, Phone, MoreHorizontal, Plus, Calendar, Check, Search, ChevronDown, FileText, Sparkles, ChevronUp } from "lucide-react"
 import { Contact } from "../types"
+import Link from 'next/link'
+import { Separator } from "@/components/ui/separator"
+import { useState } from 'react'
 
 interface ContactProfileProps {
   contact: Contact
 }
 
 export default function ContactProfile({ contact }: ContactProfileProps) {
+  const [isCardCollapsed, setIsCardCollapsed] = useState(false)
+  const [isHistoryCardCollapsed, setIsHistoryCardCollapsed] = useState(false)
+
   return (
     <div className="flex min-h-screen">
-      {/* Left Panel - Contact Info - Fixed */}
-      <div className="fixed left-[60px] top-[3.5rem] w-[300px] h-[calc(100vh-3.5rem)] bg-white border-r">
+      {/* Left Panel - Fixed */}
+      <div className="fixed left-[60px] top-[3.5rem] w-[300px] h-[calc(100vh-3.5rem)] border-r bg-background">
         <ScrollArea className="h-full">
-          <div className="flex flex-col gap-4 p-4">
-            <Button variant="ghost" className="w-fit" onClick={() => window.history.back()}>
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Leads
-            </Button>
-            
-            <div className="flex flex-col items-center gap-2 pt-4">
+          <div className="px-6 py-6 space-y-6">
+            <div className="flex items-center justify-between">
+              <Link href="/dashboard/contacts">
+                <Button variant="ghost" size="sm" className="gap-2">
+                  <ArrowLeft className="h-4 w-4" />
+                  Back
+                </Button>
+              </Link>
+              <Button variant="ghost" size="sm">
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </div>
+
+            <div className="flex flex-col items-center text-center">
               <Avatar className="h-20 w-20">
-                <AvatarImage src={contact.avatarInitials ? undefined : '/avatars/default.png'} alt={contact.name} />
-                <AvatarFallback style={{ backgroundColor: contact.avatarColor }}>{contact.avatarInitials || contact.name[0]}</AvatarFallback>
+                <AvatarImage src={contact.avatar} />
+                <AvatarFallback>{contact.name?.split(' ').map(n => n[0]).join('')}</AvatarFallback>
               </Avatar>
-              <h2 className="text-xl font-semibold">{contact.name}</h2>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <img src="/google.svg" alt="Google" className="h-4 w-4" />
-                <span>Google</span>
-              </div>
+              <h2 className="mt-4 text-xl font-semibold">{contact.name}</h2>
+              <p className="text-sm text-muted-foreground">{contact.title}</p>
+              <p className="text-sm text-muted-foreground">{contact.company?.name}</p>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Button variant="outline" className="justify-start gap-2">
+                <Mail className="h-4 w-4" />
+                {contact.email}
+              </Button>
+              <Button variant="outline" className="justify-start gap-2">
+                <Phone className="h-4 w-4" />
+                {contact.phone}
+              </Button>
             </div>
 
             {/* Action buttons */}
@@ -118,7 +140,7 @@ export default function ContactProfile({ contact }: ContactProfileProps) {
       </div>
 
       {/* Middle Section - Scrollable */}
-      <div className="flex-1 ml-[360px] mr-[320px] min-h-[calc(100vh-3.5rem)] p-6">
+      <div className="flex-1 ml-[360px] mr-[320px] min-h-[calc(100vh-3.5rem)] px-8 py-6">
         {/* Main Navigation Tabs */}
         <Tabs defaultValue="overview" className="w-full">
           <div className="border-b">
@@ -127,7 +149,7 @@ export default function ContactProfile({ contact }: ContactProfileProps) {
                 value="overview" 
                 className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-6 py-3"
               >
-                Overview
+                AI Overview
               </TabsTrigger>
               <TabsTrigger 
                 value="activities" 
@@ -141,7 +163,7 @@ export default function ContactProfile({ contact }: ContactProfileProps) {
           {/* Overview (AI Summary) Tab Content */}
           <TabsContent value="overview" className="p-6">
             <Card className="bg-white">
-              <CardContent className="p-6">
+              <CardContent className="p-4">
                 <div className="space-y-4">
                   <div className="flex items-center gap-2">
                     <Sparkles className="h-5 w-5 text-blue-500" />
@@ -174,48 +196,50 @@ export default function ContactProfile({ contact }: ContactProfileProps) {
 
             {/* Activity Sub-Tabs */}
             <Tabs defaultValue="activity" className="w-full">
-              <TabsList className="w-full justify-start border-b space-x-6 bg-transparent h-auto pb-2">
-                <TabsTrigger 
-                  value="activity" 
-                  className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-0"
-                >
-                  Activity
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="notes" 
-                  className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-0"
-                >
-                  Notes
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="emails" 
-                  className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-0"
-                >
-                  Emails
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="calls" 
-                  className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-0"
-                >
-                  Calls
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="tasks" 
-                  className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-0"
-                >
-                  Tasks
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="meetings" 
-                  className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-0"
-                >
-                  Meetings
-                </TabsTrigger>
-              </TabsList>
+              <div className="border-b">
+                <TabsList className="bg-transparent">
+                  <TabsTrigger 
+                    value="activity" 
+                    className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-6 py-3"
+                  >
+                    Activity
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="notes" 
+                    className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-6 py-3"
+                  >
+                    Notes
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="emails" 
+                    className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-6 py-3"
+                  >
+                    Emails
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="calls" 
+                    className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-6 py-3"
+                  >
+                    Calls
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="tasks" 
+                    className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-6 py-3"
+                  >
+                    Tasks
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="meetings" 
+                    className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-6 py-3"
+                  >
+                    Meetings
+                  </TabsTrigger>
+                </TabsList>
+              </div>
 
-              <TabsContent value="activity" className="mt-6">
+              <TabsContent value="activity">
                 {/* Filters */}
-                <div className="flex gap-3 mb-6">
+                <div className="flex gap-3 mb-6 mt-6">
                   <div className="text-sm text-muted-foreground">Filter by:</div>
                   <Select>
                     <SelectTrigger className="w-[180px] bg-transparent border-0 p-0 h-auto shadow-none">
@@ -238,120 +262,131 @@ export default function ContactProfile({ contact }: ContactProfileProps) {
                   </Select>
                 </div>
 
-                {/* Upcoming Activity */}
+                {/* Activity Cards */}
                 <div className="space-y-4">
-                  <h2 className="text-lg font-medium">Upcoming Activity</h2>
+                  <div className="text-sm text-muted-foreground">Today</div>
                   <Card className="bg-white">
-                    <CardContent className="p-6">
-                      <div className="flex items-start gap-4">
-                        <div className="flex-shrink-0">
-                          <Button variant="ghost" size="sm" className="h-6 w-6 p-1">
+                    <CardContent className="p-4">
+                      <div className="space-y-4">
+                        {/* Header with Collapsible Button */}
+                        <div className="flex items-start gap-2">
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="h-6 w-6 p-1 hover:bg-transparent data-[state=open]:rotate-180 transition-transform"
+                            onClick={() => setIsCardCollapsed(!isCardCollapsed)}
+                          >
                             <ChevronDown className="h-4 w-4 text-muted-foreground" />
                           </Button>
-                        </div>
-                        <div className="flex-shrink-0">
-                          <div className="h-8 w-8 rounded-lg bg-blue-50 flex items-center justify-center">
-                            <FileText className="h-4 w-4 text-blue-500" />
-                          </div>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex justify-between items-start">
-                            <div className="space-y-3">
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between">
                               <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                <FileText className="h-4 w-4" />
-                                <span>Task created Esther Howard</span>
+                                <Calendar className="h-4 w-4 text-blue-500" />
+                                <span>Meeting with Jerome Bell</span>
                               </div>
-                              <h3 className="text-base font-medium">Prepare quote for Jerome Bell</h3>
-                              <p className="text-sm text-muted-foreground">
-                                She's interested in our new product line and wants our very best price. Please include a detailed breakdown of costs.
-                              </p>
-                            </div>
-                            <div className="flex items-center gap-2 text-sm text-muted-foreground whitespace-nowrap">
-                              <span>Due:</span>
-                              <div className="flex items-center gap-1">
-                                <Calendar className="h-4 w-4" />
-                                <span>Today, 12:00 PM</span>
+                              <div className="flex items-center">
+                                <Badge variant="secondary" className="bg-blue-50 text-blue-500 hover:bg-blue-50">
+                                  In 1 hour
+                                </Badge>
+                                <Button variant="ghost" size="icon" className="h-8 w-8 ml-2">
+                                  <MoreHorizontal className="h-4 w-4" />
+                                </Button>
                               </div>
-                              <Button variant="ghost" size="icon" className="h-8 w-8 ml-2">
-                                <MoreHorizontal className="h-4 w-4" />
-                              </Button>
                             </div>
-                          </div>
-                          <div className="flex gap-6 mt-6">
-                            <div className="space-y-1">
-                              <Label className="text-xs text-muted-foreground">Reminder</Label>
-                              <Select>
-                                <SelectTrigger className="w-[140px]">
-                                  <SelectValue placeholder="No reminder" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="none">No reminder</SelectItem>
-                                  <SelectItem value="15m">15 minutes before</SelectItem>
-                                  <SelectItem value="1h">1 hour before</SelectItem>
-                                </SelectContent>
-                              </Select>
-                            </div>
-                            <div className="space-y-1">
-                              <Label className="text-xs text-muted-foreground">Task Priority</Label>
-                              <Select>
-                                <SelectTrigger className="w-[140px]">
-                                  <SelectValue>
-                                    <div className="flex items-center gap-2">
-                                      <div className="h-2 w-2 rounded-full bg-red-500" />
-                                      High
+
+                            {!isCardCollapsed && (
+                              <>
+                                <Separator className="-mx-4 my-4" />
+
+                                <div className="pl-8">
+                                  <h3 className="text-base font-semibold mb-3">Discuss new product line pricing</h3>
+                                  <p className="text-sm text-muted-foreground">
+                                    Review the pricing strategy for our upcoming product launch and align on market positioning.
+                                  </p>
+                                </div>
+
+                                <Separator className="-mx-4 my-4" />
+
+                                {/* Footer */}
+                                <div className="pl-8">
+                                  <div className="flex gap-6">
+                                    <div className="space-y-1">
+                                      <Label className="text-xs text-muted-foreground">Reminder</Label>
+                                      <Select>
+                                        <SelectTrigger className="w-[140px] bg-transparent">
+                                          <SelectValue placeholder="No reminder" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                          <SelectItem value="none">No reminder</SelectItem>
+                                          <SelectItem value="15m">15 minutes before</SelectItem>
+                                          <SelectItem value="1h">1 hour before</SelectItem>
+                                        </SelectContent>
+                                      </Select>
                                     </div>
-                                  </SelectValue>
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="high">
-                                    <div className="flex items-center gap-2">
-                                      <div className="h-2 w-2 rounded-full bg-red-500" />
-                                      High
+                                    <div className="space-y-1">
+                                      <Label className="text-xs text-muted-foreground">Task Priority</Label>
+                                      <Select>
+                                        <SelectTrigger className="w-[140px] bg-transparent">
+                                          <SelectValue>
+                                            <div className="flex items-center gap-2">
+                                              <div className="h-2 w-2 rounded-full bg-red-500" />
+                                              High
+                                            </div>
+                                          </SelectValue>
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                          <SelectItem value="high">
+                                            <div className="flex items-center gap-2">
+                                              <div className="h-2 w-2 rounded-full bg-red-500" />
+                                              High
+                                            </div>
+                                          </SelectItem>
+                                          <SelectItem value="medium">
+                                            <div className="flex items-center gap-2">
+                                              <div className="h-2 w-2 rounded-full bg-yellow-500" />
+                                              Medium
+                                            </div>
+                                          </SelectItem>
+                                          <SelectItem value="low">
+                                            <div className="flex items-center gap-2">
+                                              <div className="h-2 w-2 rounded-full bg-green-500" />
+                                              Low
+                                            </div>
+                                          </SelectItem>
+                                        </SelectContent>
+                                      </Select>
                                     </div>
-                                  </SelectItem>
-                                  <SelectItem value="medium">
-                                    <div className="flex items-center gap-2">
-                                      <div className="h-2 w-2 rounded-full bg-yellow-500" />
-                                      Medium
+                                    <div className="space-y-1">
+                                      <Label className="text-xs text-muted-foreground">Assigned to</Label>
+                                      <Select>
+                                        <SelectTrigger className="w-[140px] bg-transparent">
+                                          <SelectValue>
+                                            <div className="flex items-center gap-2">
+                                              <Avatar className="h-4 w-4">
+                                                <AvatarImage src="/avatars/esther.png" />
+                                                <AvatarFallback>EH</AvatarFallback>
+                                              </Avatar>
+                                              Esther Howard
+                                            </div>
+                                          </SelectValue>
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                          <SelectItem value="esther">
+                                            <div className="flex items-center gap-2">
+                                              <Avatar className="h-4 w-4">
+                                                <AvatarImage src="/avatars/esther.png" />
+                                                <AvatarFallback>EH</AvatarFallback>
+                                              </Avatar>
+                                              Esther Howard
+                                            </div>
+                                          </SelectItem>
+                                        </SelectContent>
+                                      </Select>
                                     </div>
-                                  </SelectItem>
-                                  <SelectItem value="low">
-                                    <div className="flex items-center gap-2">
-                                      <div className="h-2 w-2 rounded-full bg-green-500" />
-                                      Low
-                                    </div>
-                                  </SelectItem>
-                                </SelectContent>
-                              </Select>
-                            </div>
-                            <div className="space-y-1">
-                              <Label className="text-xs text-muted-foreground">Assigned to</Label>
-                              <Select>
-                                <SelectTrigger className="w-[180px]">
-                                  <SelectValue>
-                                    <div className="flex items-center gap-2">
-                                      <Avatar className="h-5 w-5">
-                                        <AvatarImage src="/avatars/esther.jpg" />
-                                        <AvatarFallback>EH</AvatarFallback>
-                                      </Avatar>
-                                      Esther Howard
-                                    </div>
-                                  </SelectValue>
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="esther">
-                                    <div className="flex items-center gap-2">
-                                      <Avatar className="h-5 w-5">
-                                        <AvatarImage src="/avatars/esther.jpg" />
-                                        <AvatarFallback>EH</AvatarFallback>
-                                      </Avatar>
-                                      Esther Howard
-                                    </div>
-                                  </SelectItem>
-                                  <SelectItem value="other">Other users</SelectItem>
-                                </SelectContent>
-                              </Select>
-                            </div>
+                                  </div>
+                                </div>
+                              </>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -360,30 +395,44 @@ export default function ContactProfile({ contact }: ContactProfileProps) {
                 </div>
 
                 {/* Activity History */}
-                <div className="space-y-4">
+                <div className="space-y-4 mt-8">
                   <div className="text-sm text-muted-foreground">12 December 2021</div>
                   <Card className="bg-white">
-                    <CardContent className="p-6">
-                      <div className="flex items-start gap-4">
-                        <div className="flex-shrink-0">
-                          <Button variant="ghost" size="sm" className="h-6 w-6 p-1">
+                    <CardContent className="p-4">
+                      <div className="space-y-4">
+                        {/* Header with Collapsible Button */}
+                        <div className="flex items-start gap-2">
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="h-6 w-6 p-1 hover:bg-transparent data-[state=open]:rotate-180 transition-transform"
+                            onClick={() => setIsHistoryCardCollapsed(!isHistoryCardCollapsed)}
+                          >
                             <ChevronDown className="h-4 w-4 text-muted-foreground" />
                           </Button>
-                        </div>
-                        <div className="flex-shrink-0">
-                          <div className="h-8 w-8 rounded-lg bg-blue-50 flex items-center justify-center">
-                            <FileText className="h-4 w-4 text-blue-500" />
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                <FileText className="h-4 w-4 text-blue-500" />
+                                <span>Task created by Esther Howard</span>
+                              </div>
+                              <Button variant="ghost" size="icon" className="h-8 w-8">
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </div>
+
+                            {!isHistoryCardCollapsed && (
+                              <>
+                                <Separator className="-mx-4 my-4" />
+                                <div className="pl-8">
+                                  <h3 className="text-base font-semibold mb-3">Prepare quote for Jerome Bell</h3>
+                                  <p className="text-sm text-muted-foreground">
+                                    She's interested in our new product line and wants our very best price. Please include a detailed breakdown of costs.
+                                  </p>
+                                </div>
+                              </>
+                            )}
                           </div>
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <FileText className="h-4 w-4" />
-                            <span>Task created Esther Howard</span>
-                          </div>
-                          <h3 className="text-base font-medium mt-3">Prepare quote for Jerome Bell</h3>
-                          <p className="text-sm text-muted-foreground mt-3">
-                            She's interested in our new product line and wants our very best price. Please include a detailed breakdown of costs.
-                          </p>
                         </div>
                       </div>
                     </CardContent>
@@ -395,10 +444,10 @@ export default function ContactProfile({ contact }: ContactProfileProps) {
         </Tabs>
       </div>
 
-      {/* Right Panel - Company Info - Fixed */}
-      <div className="fixed right-0 top-[3.5rem] w-[300px] h-[calc(100vh-3.5rem)] bg-white border-l">
+      {/* Right Panel - Fixed */}
+      <div className="fixed right-0 top-[3.5rem] w-[320px] h-[calc(100vh-3.5rem)] border-l bg-background">
         <ScrollArea className="h-full">
-          <div className="p-4 space-y-6">
+          <div className="px-6 py-6 space-y-6">
             <div>
               <h3 className="mb-4 text-sm font-medium">Company Information</h3>
               <Card>
