@@ -20,7 +20,7 @@ export default function ContactProfile({ contact }: ContactProfileProps) {
   return (
     <div className="flex min-h-screen">
       {/* Left Panel - Contact Info - Fixed */}
-      <div className="fixed left-[60px] top-[3.5rem] w-[300px] h-[calc(100vh-3.5rem)] bg-white border rounded-lg">
+      <div className="fixed left-[60px] top-[3.5rem] w-[300px] h-[calc(100vh-3.5rem)] bg-white border-r">
         <ScrollArea className="h-full">
           <div className="flex flex-col gap-4 p-4">
             <Button variant="ghost" className="w-fit" onClick={() => window.history.back()}>
@@ -396,7 +396,7 @@ export default function ContactProfile({ contact }: ContactProfileProps) {
       </div>
 
       {/* Right Panel - Company Info - Fixed */}
-      <div className="fixed right-0 top-[3.5rem] w-[300px] h-[calc(100vh-3.5rem)] bg-white border rounded-lg">
+      <div className="fixed right-0 top-[3.5rem] w-[300px] h-[calc(100vh-3.5rem)] bg-white border-l">
         <ScrollArea className="h-full">
           <div className="p-4 space-y-6">
             <div>
