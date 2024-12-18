@@ -26,13 +26,13 @@ export function AgentDetails({ agent }: AgentDetailsProps) {
   }
 
   return (
-    <div className="h-full p-8 space-y-8">
+    <div className="h-full space-y-8 bg-white px-6 py-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-primary to-chart-1 bg-clip-text text-transparent">
+        <h1 className="text-2xl font-semibold text-gray-900">
           {agent.name}
         </h1>
         <Button 
-          className="bg-primary hover:bg-primary/90 shadow-lg hover:shadow-primary/25 transition-all duration-300"
+          className="bg-primary hover:bg-primary/90 transition-colors"
         >
           <PlayCircle className="mr-2 h-5 w-5" />
           Test Agent
@@ -41,100 +41,109 @@ export function AgentDetails({ agent }: AgentDetailsProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Agent Details Card */}
-        <Card className="glass-card p-6 md:col-span-2">
-          <div className="flex justify-between items-center mb-4">
-            <div>
-              <h2 className="text-lg font-semibold">Agent Details</h2>
-              <div className="text-sm font-medium text-primary mt-1">
-                {getAgentTypeLabel(agent.type)}
+        <Card className="border border-gray-200 bg-background md:col-span-2 overflow-hidden">
+          <div className="border-b border-gray-200 bg-[#F9FAFB]">
+            <div className="px-6 py-3 flex justify-between items-center">
+              <div>
+                <h2 className="text-lg font-semibold">Agent Details</h2>
+                <div className="text-sm font-medium text-primary mt-1">
+                  {getAgentTypeLabel(agent.type)}
+                </div>
               </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <StatusBadge 
-                status={agent.status} 
-                onStatusChange={(newStatus) => {
-                  console.log("Status changed to:", newStatus)
-                }} 
-              />
-              {!isEditing && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setIsEditing(true)}
-                >
-                  <Edit className="h-4 w-4" />
-                </Button>
-              )}
+              <div className="flex items-center gap-4">
+                <StatusBadge 
+                  status={agent.status} 
+                  onStatusChange={(newStatus) => {
+                    console.log("Status changed to:", newStatus)
+                  }} 
+                />
+                {!isEditing && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setIsEditing(true)}
+                  >
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
-          {isEditing ? (
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label>Name</Label>
-                <Input 
-                  value={editedAgent.name}
-                  onChange={(e) => setEditedAgent({
-                    ...editedAgent,
-                    name: e.target.value
-                  })}
-                />
+          <div className="p-6">
+            {isEditing ? (
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Name</Label>
+                  <Input 
+                    value={editedAgent.name}
+                    onChange={(e) => setEditedAgent({
+                      ...editedAgent,
+                      name: e.target.value
+                    })}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Description</Label>
+                  <Textarea 
+                    value={editedAgent.description}
+                    onChange={(e) => setEditedAgent({
+                      ...editedAgent,
+                      description: e.target.value
+                    })}
+                    rows={3}
+                  />
+                </div>
+                <div className="flex justify-end">
+                  <Button
+                    variant="secondary"
+                    onClick={handleSave}
+                  >
+                    Save Changes
+                  </Button>
+                </div>
               </div>
-              <div className="space-y-2">
-                <Label>Description</Label>
-                <Textarea 
-                  value={editedAgent.description}
-                  onChange={(e) => setEditedAgent({
-                    ...editedAgent,
-                    description: e.target.value
-                  })}
-                  rows={3}
-                />
-              </div>
-              <div className="flex justify-end">
-                <Button
-                  variant="secondary"
-                  onClick={handleSave}
-                >
-                  Save Changes
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {agent.description}
-            </p>
-          )}
+            ) : (
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {agent.description}
+              </p>
+            )}
+          </div>
         </Card>
 
-        {/* Agent Score Card */}
-        <Card className="glass-card p-6">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold">Agent Score</h2>
-          </div>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="space-y-1">
-                <span className="text-4xl font-bold bg-gradient-to-r from-chart-2 to-chart-3 bg-clip-text text-transparent">
-                  85
-                </span>
-                <p className="text-sm text-muted-foreground">Current Score</p>
-              </div>
-              <div className="h-16 w-16 rounded-full border-4 border-chart-2 flex items-center justify-center">
-                <span className="text-lg font-semibold text-chart-2">A+</span>
-              </div>
+        {/* Agent Priority Score */}
+        <Card className="border border-gray-200 bg-background overflow-hidden">
+          <div className="border-b border-gray-200 bg-[#F9FAFB]">
+            <div className="px-6 py-3">
+              <h2 className="text-lg font-semibold">Agent Priority Score</h2>
             </div>
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Response Time</span>
-                <span className="font-medium">95%</span>
+          </div>
+          <div className="p-6">
+            <div className="space-y-6">
+              {/* Priority Score */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-4xl font-semibold text-gray-900">P1</div>
+                  <div className="text-sm text-muted-foreground mt-1">High Priority</div>
+                </div>
+                <div className="h-14 w-14 rounded-full border-[3px] border-blue-500 flex items-center justify-center">
+                  <span className="text-lg font-semibold text-blue-500">95</span>
+                </div>
               </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Accuracy</span>
-                <span className="font-medium">88%</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">User Satisfaction</span>
-                <span className="font-medium">92%</span>
+
+              {/* Simple Metrics */}
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Response SLA</span>
+                  <span className="text-sm font-medium text-gray-900">{"< 30s"}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Accuracy Target</span>
+                  <span className="text-sm font-medium text-gray-900">98%</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Daily Queries</span>
+                  <span className="text-sm font-medium text-gray-900">2.5k</span>
+                </div>
               </div>
             </div>
           </div>
@@ -142,35 +151,47 @@ export function AgentDetails({ agent }: AgentDetailsProps) {
       </div>
 
       {/* Agent Behavior */}
-      <Card className="glass-card p-6">
-        <h2 className="text-lg font-semibold mb-4">Agent Behavior</h2>
-        <AgentBehavior />
-      </Card>
-
-      {/* Agent's Knowledge Base */}
-      <Card className="glass-card p-6">
-        <h2 className="text-lg font-semibold mb-4">Agent's Knowledge Base</h2>
-        <div className="space-y-4">
-          <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
-            <div>
-              <h3 className="font-medium">{agent.knowledgeBase}</h3>
-              <p className="text-sm text-muted-foreground mt-1">
-                Current knowledge source for this agent
-              </p>
-            </div>
-            <Button variant="outline" size="sm">
-              <Database className="h-4 w-4 mr-2" />
-              Configure
-            </Button>
+      <Card className="border border-gray-200 bg-background md:col-span-2 overflow-hidden">
+        <div className="border-b border-gray-200 bg-[#F9FAFB]">
+          <div className="px-6 py-3">
+            <h2 className="text-lg font-semibold">Agent Behavior</h2>
           </div>
-          <p className="text-sm text-muted-foreground">
-            The knowledge base determines what information the agent can access and use 
-            when generating responses. Configure this to ensure accurate and relevant answers.
-          </p>
+        </div>
+        <div className="p-6">
+          <AgentBehavior agent={agent} />
         </div>
       </Card>
 
-      {/* Agent History */}
+      {/* Agent's Knowledge Base */}
+      <Card className="border border-gray-200 bg-background overflow-hidden">
+        <div className="border-b border-gray-200 bg-[#F9FAFB]">
+          <div className="px-6 py-3">
+            <h2 className="text-lg font-semibold">Agent's Knowledge Base</h2>
+          </div>
+        </div>
+        <div className="p-6">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
+              <div>
+                <h3 className="font-medium">{agent.knowledgeBase}</h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Current knowledge source for this agent
+                </p>
+              </div>
+              <Button variant="outline" size="sm">
+                <Database className="h-4 w-4 mr-2" />
+                Configure
+              </Button>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              The knowledge base determines what information the agent can access and use 
+              when generating responses. Configure this to ensure accurate and relevant answers.
+            </p>
+          </div>
+        </div>
+      </Card>
+
+      {/* Recent Activity */}
       <AgentHistory />
     </div>
   )

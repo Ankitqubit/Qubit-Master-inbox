@@ -1,106 +1,120 @@
 "use client"
 
-import { useState } from "react"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { DataTable } from "@/components/ui/data-table"
-import { Card } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Plus } from "lucide-react"
-import { columns } from "./components/columns"
-import { agents } from "./data/agents"
-import type { Agent } from "./data/agents"
+import { AgentsTable } from "./agents-table"
+import { Bot, MessageSquare, Users, Plus } from "lucide-react"
+import { useState } from "react"
+import { CreateAgentDialog } from "./components/create-agent-dialog"
 
-export default function AIAgentsPage() {
-  const [data, setData] = useState<Agent[]>(agents)
+export type AgentStatus = "all" | "active" | "inactive"
+
+export default function AgentsPage() {
+  const [activeTab, setActiveTab] = useState<AgentStatus>("all")
+  const [createDialogOpen, setCreateDialogOpen] = useState(false)
 
   return (
-    <div className="min-h-screen p-8 space-y-8">
-      <div className="flex justify-between items-center">
-        <h1 className="button-xl bg-gradient-to-r from-[#0271EE] to-[#5E5E5E] bg-clip-text text-transparent">
-          AI Agents
-        </h1>
-        <Button 
-          className="button-m bg-[#0271EE] hover:bg-[#0271EE]/90 text-white shadow-lg hover:shadow-[#0271EE]/25 transition-all duration-300"
+    <div className="flex-1 space-y-6 px-6 py-6 ml-[280px]">
+      {/* Header section */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold text-gray-900">AI Agents</h1>
+          <p className="text-sm text-gray-500">Create and manage your AI agents</p>
+        </div>
+        <Button
+          onClick={() => setCreateDialogOpen(true)}
+          className="flex items-center gap-2"
         >
-          <Plus className="mr-2 h-5 w-5" />
-          Create Agent
+          <Plus className="h-4 w-4" />
+          Create New Agent
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 fade-in">
-        <Card className="glass-card p-6 glass-card-hover gradient-border">
-          <h3 className="caption-m text-[#5E5E5E] mb-2">
-            Total Agents
-          </h3>
-          <div className="flex items-end justify-between">
-            <span className="button-xl bg-gradient-to-r from-[#0271EE] to-[#5E5E5E] bg-clip-text text-transparent">
-              {data.length}
-            </span>
-            <span className="caption-s text-[#5E5E5E]">Last 30 days</span>
-          </div>
+      {/* Stats Section */}
+      <div className="grid gap-4 md:grid-cols-3">
+        <Card className="border bg-white shadow-none">
+          <CardContent className="p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="flex h-5 w-5 items-center justify-center">
+                <Bot className="h-5 w-5 text-gray-500" />
+              </div>
+              <p className="text-sm font-medium text-gray-500">Total Agents</p>
+            </div>
+            <div className="flex items-baseline gap-2">
+              <h3 className="text-3xl font-semibold text-gray-900">12</h3>
+              <div className="text-xs font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded-full">+15.8%</div>
+            </div>
+          </CardContent>
         </Card>
-        
-        <Card className="glass-card p-6 glass-card-hover gradient-border">
-          <h3 className="caption-m text-[#5E5E5E] mb-2">
-            Active Agents
-          </h3>
-          <div className="flex items-end justify-between">
-            <span className="button-xl bg-gradient-to-r from-[#0271EE] to-[#5E5E5E] bg-clip-text text-transparent">
-              {data.filter(agent => agent.status === 'active').length}
-            </span>
-            <span className="caption-s text-emerald-500">↑ 12%</span>
-          </div>
+
+        <Card className="border bg-white shadow-none">
+          <CardContent className="p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="flex h-5 w-5 items-center justify-center">
+                <Users className="h-5 w-5 text-gray-500" />
+              </div>
+              <p className="text-sm font-medium text-gray-500">Active Users</p>
+            </div>
+            <div className="flex items-baseline gap-2">
+              <h3 className="text-3xl font-semibold text-gray-900">1,234</h3>
+              <div className="text-xs font-medium text-red-600 bg-red-50 px-2 py-0.5 rounded-full">-34.0%</div>
+            </div>
+          </CardContent>
         </Card>
-        
-        <Card className="glass-card p-6 glass-card-hover gradient-border">
-          <h3 className="caption-m text-[#5E5E5E] mb-2">
-            Total Interactions
-          </h3>
-          <div className="flex items-end justify-between">
-            <span className="button-xl bg-gradient-to-r from-[#0271EE] to-[#5E5E5E] bg-clip-text text-transparent">
-              1,234
-            </span>
-            <span className="caption-s text-[#5E5E5E]">This month</span>
-          </div>
+
+        <Card className="border bg-white shadow-none">
+          <CardContent className="p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="flex h-5 w-5 items-center justify-center">
+                <MessageSquare className="h-5 w-5 text-gray-500" />
+              </div>
+              <p className="text-sm font-medium text-gray-500">Total Conversations</p>
+            </div>
+            <div className="flex items-baseline gap-2">
+              <h3 className="text-3xl font-semibold text-gray-900">8,547</h3>
+              <div className="text-xs font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded-full">+24.2%</div>
+            </div>
+          </CardContent>
         </Card>
       </div>
 
-      <Card className="glass-card p-6 fade-in">
-        <Tabs defaultValue="all" className="mb-6">
-          <TabsList className="bg-[#E7F2FF] p-1">
-            <TabsTrigger value="all" className="button-m data-[state=active]:bg-white">
-              All Agents
-            </TabsTrigger>
-            <TabsTrigger value="active" className="button-m data-[state=active]:bg-white">
-              Active
-            </TabsTrigger>
-            <TabsTrigger value="inactive" className="button-m data-[state=active]:bg-white">
-              Inactive
-            </TabsTrigger>
-          </TabsList>
-          <TabsContent value="all" className="mt-4">
-            <DataTable 
-              columns={columns} 
-              data={data}
-              meta={{ updateData: setData }}
-            />
-          </TabsContent>
-          <TabsContent value="active" className="mt-4">
-            <DataTable 
-              columns={columns} 
-              data={data.filter(agent => agent.status === 'active')}
-              meta={{ updateData: setData }}
-            />
-          </TabsContent>
-          <TabsContent value="inactive" className="mt-4">
-            <DataTable 
-              columns={columns} 
-              data={data.filter(agent => agent.status === 'inactive')}
-              meta={{ updateData: setData }}
-            />
-          </TabsContent>
-        </Tabs>
-      </Card>
+      {/* Tabs and Table Section */}
+      <div className="space-y-4">
+        {/* Tabs */}
+        <div className="flex space-x-1 rounded-lg bg-gray-100 p-0.5 w-fit">
+          <Button 
+            variant={activeTab === "all" ? "secondary" : "ghost"}
+            className={activeTab === "all" ? "bg-white text-sm font-medium px-3 py-1 focus-visible:ring-0" : "text-gray-600 hover:text-gray-900 text-sm font-medium px-3 py-1"}
+            onClick={() => setActiveTab("all")}
+          >
+            All Agents
+          </Button>
+          <Button 
+            variant={activeTab === "active" ? "secondary" : "ghost"}
+            className={activeTab === "active" ? "bg-white text-sm font-medium px-3 py-1 focus-visible:ring-0" : "text-gray-600 hover:text-gray-900 text-sm font-medium px-3 py-1"}
+            onClick={() => setActiveTab("active")}
+          >
+            Active
+          </Button>
+          <Button 
+            variant={activeTab === "inactive" ? "secondary" : "ghost"}
+            className={activeTab === "inactive" ? "bg-white text-sm font-medium px-3 py-1 focus-visible:ring-0" : "text-gray-600 hover:text-gray-900 text-sm font-medium px-3 py-1"}
+            onClick={() => setActiveTab("inactive")}
+          >
+            Inactive
+          </Button>
+        </div>
+
+        {/* Table Section */}
+        <div className="rounded-lg border bg-white overflow-hidden">
+          <AgentsTable activeTab={activeTab} />
+        </div>
+      </div>
+
+      <CreateAgentDialog
+        open={createDialogOpen}
+        onOpenChange={setCreateDialogOpen}
+      />
     </div>
   )
 }

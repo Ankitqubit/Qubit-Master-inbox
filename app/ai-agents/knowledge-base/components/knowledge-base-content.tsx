@@ -29,18 +29,18 @@ export function KnowledgeBaseContent({ knowledgeBase }: KnowledgeBaseContentProp
   }
 
   return (
-    <div className="h-full p-8 space-y-8">
+    <div className="flex-1 space-y-6 px-6 py-6">
       <KnowledgeBaseHeader 
         knowledgeBase={knowledgeBase} 
         onAddFile={handleAddFile}
       />
-      <Card className="glass-card">
+      <div className="rounded-lg border bg-white overflow-hidden">
         <FileManagementTable 
           knowledgeBaseId={knowledgeBase.id} 
           files={files}
           setFiles={setFiles}
         />
-      </Card>
+      </div>
     </div>
   )
 }

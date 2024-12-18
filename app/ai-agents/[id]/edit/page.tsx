@@ -16,8 +16,11 @@ export default function AgentEditPage({
 
   if (!agent) {
     return (
-      <div className="h-full p-8">
-        <h1 className="text-2xl font-semibold tracking-tight">Agent not found</h1>
+      <div className="flex-1 space-y-6 px-6 py-6">
+        <div>
+          <h1 className="text-2xl font-semibold text-gray-900">Agent not found</h1>
+          <p className="text-sm text-gray-500">The requested agent could not be found.</p>
+        </div>
       </div>
     )
   }

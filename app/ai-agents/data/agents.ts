@@ -7,42 +7,75 @@ export type AgentType =
 
 export type Agent = {
   id: string
-  type: AgentType
   name: string
   description: string
   status: "active" | "inactive"
-  createdAt: string
-  knowledgeBase: string
+  lastActive?: string
+  knowledgeBase?: number
+  interactions?: number
 }
 
 export const agents: Agent[] = [
   {
     id: "1",
-    type: "customer-support",
-    name: "Customer Support Agent",
-    description: "Handles customer inquiries and support tickets",
+    name: "Reply Agent",
+    description: "Handles all the replies with AI response",
     status: "active",
-    createdAt: "2024-03-20",
-    knowledgeBase: "Support Documentation"
+    lastActive: "2 hours ago",
+    knowledgeBase: 15,
+    interactions: 234
   },
   {
     id: "2",
-    type: "sales",
-    name: "Sales Assistant",
-    description: "Assists with product recommendations and sales",
-    status: "inactive",
-    createdAt: "2024-03-19",
-    knowledgeBase: "Product Catalog"
+    name: "Sequence Agent",
+    description: "Handles all the replies with AI response",
+    status: "active",
+    lastActive: "5 mins ago",
+    knowledgeBase: 8,
+    interactions: 567
   },
   {
     id: "3",
-    type: "technical-support",
-    name: "Technical Support Bot",
-    description: "Provides technical troubleshooting assistance",
-    status: "active",
-    createdAt: "2024-03-18",
-    knowledgeBase: "Technical Guides"
+    name: "Reply to foundrs Agent",
+    description: "Handles all the replies with AI response",
+    status: "inactive",
+    lastActive: "2 days ago",
+    knowledgeBase: 3,
+    interactions: 89
   },
+  {
+    id: "4",
+    name: "Sequence 2 Agent",
+    description: "Handles all the replies with AI response",
+    status: "active",
+    lastActive: "1 hour ago",
+    knowledgeBase: 12,
+    interactions: 432
+  },
+  {
+    id: "5",
+    name: "Reply Agent",
+    description: "Handles all the replies with AI response",
+    status: "active",
+    lastActive: "Just now",
+    knowledgeBase: 6,
+    interactions: 123
+  },
+  {
+    id: "6",
+    name: "Reply to foundrs Agent",
+    description: "Handles all the replies with AI response",
+    status: "inactive",
+    lastActive: "1 week ago",
+    knowledgeBase: 2,
+    interactions: 45
+  },
+  {
+    id: "7",
+    name: "Sequence 2 Agent",
+    description: "Handles all the replies with AI response",
+    status: "active"
+  }
 ]
 
 export const getAgentById = (id: string): Agent | undefined => {
