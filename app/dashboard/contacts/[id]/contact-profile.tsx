@@ -23,6 +23,7 @@ interface ContactProfileProps {
 export default function ContactProfile({ contact }: ContactProfileProps) {
   const [isCardCollapsed, setIsCardCollapsed] = useState(false)
   const [isHistoryCardCollapsed, setIsHistoryCardCollapsed] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
 
   const copyToClipboard = async (text: string, type: 'email' | 'phone') => {
     try {
@@ -204,28 +205,18 @@ export default function ContactProfile({ contact }: ContactProfileProps) {
       </div>
 
       {/* Middle Section - Scrollable */}
-      <div className="flex-1 ml-[360px] mr-[320px] min-h-[calc(100vh-3.5rem)] px-8 py-6">
-        {/* Main Navigation Tabs */}
-        <Tabs defaultValue="overview" className="w-full">
-          <div className="border-b">
-            <TabsList className="bg-transparent">
-              <TabsTrigger 
-                value="overview" 
-                className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-6 py-3"
-              >
-                AI Overview
-              </TabsTrigger>
-              <TabsTrigger 
-                value="activities" 
-                className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-6 py-3"
-              >
-                Activities
-              </TabsTrigger>
-            </TabsList>
+      <div className="flex-1 ml-[360px] mr-[320px] min-h-[calc(100vh-3.5rem)]">
+        <Tabs defaultValue="overview" className="h-full">
+          <div className="sticky top-[3.5rem] z-40">
+            <div className="px-8">
+              <TabsList className="w-full grid grid-cols-2 p-1 bg-muted">
+                <TabsTrigger value="overview">AI Overview</TabsTrigger>
+                <TabsTrigger value="activities">Activities</TabsTrigger>
+              </TabsList>
+            </div>
           </div>
 
-          {/* Overview (AI Summary) Tab Content */}
-          <TabsContent value="overview" className="p-6">
+          <TabsContent value="overview" className="px-8 py-6">
             <Card className="bg-white">
               <CardContent className="p-4">
                 <div className="space-y-8">
@@ -316,7 +307,7 @@ export default function ContactProfile({ contact }: ContactProfileProps) {
           </TabsContent>
 
           {/* Activities Tab Content */}
-          <TabsContent value="activities" className="p-6">
+          <TabsContent value="activities" className="px-8 py-6">
             {/* Search Activities */}
             <div className="flex justify-between items-center mb-6">
               <div className="relative w-[300px]">
@@ -335,7 +326,7 @@ export default function ContactProfile({ contact }: ContactProfileProps) {
             {/* Activity Sub-Tabs */}
             <Tabs defaultValue="activity" className="w-full">
               <div className="border-b">
-                <TabsList className="bg-transparent">
+                <TabsList className="w-full justify-start bg-transparent">
                   <TabsTrigger 
                     value="activity" 
                     className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-6 py-3"
@@ -374,8 +365,7 @@ export default function ContactProfile({ contact }: ContactProfileProps) {
                   </TabsTrigger>
                 </TabsList>
               </div>
-
-              <TabsContent value="activity">
+              <TabsContent value="activity" className="mt-6">
                 {/* Filters */}
                 <div className="flex gap-3 mb-6 mt-6">
                   <div className="text-sm text-muted-foreground">Filter by:</div>
@@ -436,7 +426,7 @@ export default function ContactProfile({ contact }: ContactProfileProps) {
                               <>
                                 <div className="pl-8 mt-4">
                                   <h3 className="text-base font-semibold mb-3">Discuss new product line pricing</h3>
-                                  <p className="text-sm text-muted-foreground">
+                                  <p className="text-sm leading-relaxed text-secondary">
                                     Review the pricing strategy for our upcoming product launch and align on market positioning.
                                   </p>
                                 </div>
@@ -558,7 +548,7 @@ export default function ContactProfile({ contact }: ContactProfileProps) {
                               <>
                                 <div className="pl-8 mt-4">
                                   <h3 className="text-base font-semibold mb-3">Prepare quote for Jerome Bell</h3>
-                                  <p className="text-sm text-muted-foreground">
+                                  <p className="text-sm leading-relaxed text-secondary">
                                     She's interested in our new product line and wants our very best price. Please include a detailed breakdown of costs.
                                   </p>
                                 </div>
