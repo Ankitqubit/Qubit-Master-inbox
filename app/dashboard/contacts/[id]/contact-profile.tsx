@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, Mail, Phone, MoreHorizontal, Plus, Calendar, Check, Search, ChevronDown, FileText, Sparkles, ChevronUp, Copy, Linkedin, Twitter, Facebook, Instagram, CheckCircle2, ArrowRight } from "lucide-react"
+import { ArrowLeft, Mail, Phone, MoreHorizontal, Plus, Calendar, Check, Search, ChevronDown, FileText, Sparkles, ChevronUp, Copy, Linkedin, Twitter, Facebook, Instagram, CheckCircle2, ArrowRight, User, MessageSquare, KeyRound, Clock, ArrowRightCircle, Target } from "lucide-react"
 import { Contact } from "../types"
 import Link from 'next/link'
 import { useState } from 'react'
@@ -228,119 +228,84 @@ export default function ContactProfile({ contact }: ContactProfileProps) {
           <TabsContent value="overview" className="p-6">
             <Card className="bg-white">
               <CardContent className="p-4">
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="h-5 w-5 text-blue-500" />
-                    <h3 className="text-lg font-semibold">AI Summary</h3>
+                <div className="space-y-8">
+                  <div className="flex items-center gap-3 border-b pb-4">
+                    <Sparkles className="h-5 w-5 text-primary" />
+                    <h3 className="text-xl font-semibold text-foreground">AI Summary</h3>
                   </div>
-                  <div className="space-y-6">
-                    {/* Tasks Section */}
-                    <div className="space-y-3">
-                      <h4 className="text-sm font-medium">Pending Tasks</h4>
-                      <div className="space-y-2">
-                        <div className="flex items-start gap-2">
-                          <CheckCircle2 className="h-4 w-4 mt-0.5 text-muted-foreground" />
-                          <div>
-                            <p className="text-sm">Schedule technical deep-dive session</p>
-                            <p className="text-xs text-muted-foreground">Due Dec 20, 2023</p>
-                          </div>
-                        </div>
-                        <div className="flex items-start gap-2">
-                          <CheckCircle2 className="h-4 w-4 mt-0.5 text-muted-foreground" />
-                          <div>
-                            <p className="text-sm">Review financial projections</p>
-                            <p className="text-xs text-muted-foreground">Due Dec 22, 2023</p>
-                          </div>
-                        </div>
+
+                  <div className="grid gap-8">
+                    {/* Overview Section */}
+                    <div className="rounded-lg border border-border/50 p-6">
+                      <div className="flex items-center gap-2 mb-4">
+                        <User className="h-4 w-4 text-indigo-400" />
+                        <h4 className="text-base font-semibold text-foreground">Overview</h4>
+                      </div>
+                      <div className="pr-8">
+                        <p className="text-sm leading-relaxed text-secondary">
+                          John Smith is a seasoned technology executive with over 15 years of experience in AI and machine learning. 
+                          Currently serving as the CEO of TechVision AI, he has led the company through significant growth phases 
+                          and two successful funding rounds. Prior experience includes leadership roles at major tech companies 
+                          and a successful exit from his previous startup.
+                        </p>
                       </div>
                     </div>
 
-                    {/* Key Contacts Section */}
-                    <div className="space-y-3">
-                      <h4 className="text-sm font-medium">Key Contacts</h4>
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          <Avatar className="h-6 w-6">
-                            <AvatarImage src="/avatars/contact1.png" />
-                            <AvatarFallback>SC</AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <p className="text-sm">Sarah Chen</p>
-                            <p className="text-xs text-muted-foreground">CEO & Co-founder</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Avatar className="h-6 w-6">
-                            <AvatarImage src="/avatars/contact2.png" />
-                            <AvatarFallback>MR</AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <p className="text-sm">Michael Rodriguez</p>
-                            <p className="text-xs text-muted-foreground">CTO</p>
-                          </div>
-                        </div>
+                    {/* Conversation Summary Section */}
+                    <div className="rounded-lg border border-border/50 p-6">
+                      <div className="flex items-center gap-2 mb-4">
+                        <MessageSquare className="h-4 w-4 text-blue-400" />
+                        <h4 className="text-base font-semibold text-foreground">Conversation Summary</h4>
                       </div>
-                    </div>
-
-                    {/* Recent Conversations */}
-                    <div className="space-y-3">
-                      <h4 className="text-sm font-medium">Recent Conversations</h4>
-                      <div className="space-y-2">
-                        <div className="rounded-lg border p-3 space-y-2">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <Calendar className="h-4 w-4 text-muted-foreground" />
-                              <p className="text-xs text-muted-foreground">Dec 15, 2023</p>
+                      <div className="space-y-6">
+                        <p className="text-sm leading-relaxed text-secondary">
+                          Recent discussions have centered around TechVision AI's expansion plans and technical infrastructure. 
+                          Key focus areas include scaling the enterprise solution, exploring APAC market opportunities, and preparing 
+                          for Series B funding. The team has made significant progress with a successful POC completion and is 
+                          actively working on strengthening their competitive position.
+                        </p>
+                        <div>
+                          <h5 className="text-sm font-medium text-foreground mb-3">Key Discussion Points</h5>
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="p-3 bg-muted/30 rounded-md">
+                              <p className="text-sm text-secondary">Product roadmap focusing on enterprise features</p>
                             </div>
-                            <Badge variant="outline">Product Demo</Badge>
-                          </div>
-                          <p className="text-sm">Demonstrated new AI features. Team showed strong interest in computer vision capabilities.</p>
-                        </div>
-                        <div className="rounded-lg border p-3 space-y-2">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <Calendar className="h-4 w-4 text-muted-foreground" />
-                              <p className="text-xs text-muted-foreground">Dec 10, 2023</p>
+                            <div className="p-3 bg-muted/30 rounded-md">
+                              <p className="text-sm text-secondary">Technical architecture and scalability plans</p>
                             </div>
-                            <Badge variant="outline">Technical Review</Badge>
+                            <div className="p-3 bg-muted/30 rounded-md">
+                              <p className="text-sm text-secondary">Market expansion strategy for APAC region</p>
+                            </div>
+                            <div className="p-3 bg-muted/30 rounded-md">
+                              <p className="text-sm text-secondary">Competitive positioning strategy</p>
+                            </div>
                           </div>
-                          <p className="text-sm">Deep dive into architecture. Discussed scaling plans and infrastructure requirements.</p>
                         </div>
                       </div>
                     </div>
 
-                    {/* Key Metrics */}
-                    <div className="space-y-3">
-                      <h4 className="text-sm font-medium">Key Metrics</h4>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="rounded-lg border p-3 space-y-1">
-                          <p className="text-xs text-muted-foreground">ARR Growth</p>
-                          <p className="text-lg font-semibold">300%</p>
-                          <p className="text-xs text-green-600">↑ 50% from last quarter</p>
-                        </div>
-                        <div className="rounded-lg border p-3 space-y-1">
-                          <p className="text-xs text-muted-foreground">Customer Base</p>
-                          <p className="text-lg font-semibold">150+</p>
-                          <p className="text-xs text-green-600">↑ 30 new this quarter</p>
-                        </div>
+                    {/* Recommended Next Steps Section */}
+                    <div className="rounded-lg border border-border/50 p-6">
+                      <div className="flex items-center gap-2 mb-4">
+                        <ArrowRight className="h-4 w-4 text-emerald-400" />
+                        <h4 className="text-base font-semibold text-foreground">Recommended Next Steps</h4>
                       </div>
-                    </div>
-
-                    {/* Next Steps */}
-                    <div className="space-y-3">
-                      <h4 className="text-sm font-medium">Recommended Next Steps</h4>
-                      <div className="space-y-2">
-                        <div className="flex items-start gap-2">
-                          <ArrowRight className="h-4 w-4 mt-0.5 text-blue-500" />
-                          <p className="text-sm">Schedule follow-up meeting with technical team</p>
+                      <div className="grid gap-3">
+                        <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-md">
+                          <ArrowRightCircle className="h-4 w-4 text-emerald-400 shrink-0" />
+                          <p className="text-sm text-secondary">Schedule technical deep-dive session for infrastructure review</p>
                         </div>
-                        <div className="flex items-start gap-2">
-                          <ArrowRight className="h-4 w-4 mt-0.5 text-blue-500" />
-                          <p className="text-sm">Prepare detailed valuation analysis</p>
+                        <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-md">
+                          <ArrowRightCircle className="h-4 w-4 text-emerald-400 shrink-0" />
+                          <p className="text-sm text-secondary">Follow up on enterprise client references</p>
                         </div>
-                        <div className="flex items-start gap-2">
-                          <ArrowRight className="h-4 w-4 mt-0.5 text-blue-500" />
-                          <p className="text-sm">Review customer references</p>
+                        <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-md">
+                          <ArrowRightCircle className="h-4 w-4 text-emerald-400 shrink-0" />
+                          <p className="text-sm text-secondary">Review updated financial projections</p>
+                        </div>
+                        <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-md">
+                          <ArrowRightCircle className="h-4 w-4 text-emerald-400 shrink-0" />
+                          <p className="text-sm text-secondary">Coordinate meeting with potential strategic partners</p>
                         </div>
                       </div>
                     </div>
@@ -650,7 +615,7 @@ export default function ContactProfile({ contact }: ContactProfileProps) {
                   <Plus className="h-4 w-4" />
                   Create new deal
                 </Button>
-                <Card className="hover:bg-accent/50 transition-colors">
+                <Card>
                   <Collapsible>
                     <CollapsibleTrigger className="w-full">
                       <CardHeader className="p-4">
@@ -721,71 +686,6 @@ export default function ContactProfile({ contact }: ContactProfileProps) {
                                   <li>Valuation discussion with the team</li>
                                 </ul>
                               </p>
-                            </div>
-                          </div>
-
-                          {/* Conversation Details */}
-                          <div className="space-y-4">
-                            {/* Lead Partner's Input */}
-                            <div className="space-y-2">
-                              <div className="flex items-center gap-2">
-                                <Avatar className="h-6 w-6">
-                                  <AvatarImage src="/avatars/partner.png" />
-                                  <AvatarFallback className="text-xs">JP</AvatarFallback>
-                                </Avatar>
-                                <div className="text-sm">
-                                  <span className="font-medium">John Partner</span>
-                                  <span className="text-muted-foreground"> • Lead Partner</span>
-                                </div>
-                                <span className="text-xs text-muted-foreground ml-auto">2:30 PM</span>
-                              </div>
-                              <div className="text-sm text-muted-foreground pl-8">
-                                Strong founding team with previous exits. Technology differentiation is compelling. 
-                                Growth metrics are impressive - 3x YoY revenue growth. Recommend moving forward with technical assessment.
-                              </div>
-                            </div>
-
-                            {/* Senior Analyst's Input */}
-                            <div className="space-y-2">
-                              <div className="flex items-center gap-2">
-                                <Avatar className="h-6 w-6">
-                                  <AvatarImage src="/avatars/analyst.png" />
-                                  <AvatarFallback className="text-xs">SA</AvatarFallback>
-                                </Avatar>
-                                <div className="text-sm">
-                                  <span className="font-medium">Sarah Analyst</span>
-                                  <span className="text-muted-foreground"> • Senior Analyst</span>
-                                </div>
-                                <span className="text-xs text-muted-foreground ml-auto">11:45 AM</span>
-                              </div>
-                              <div className="text-sm text-muted-foreground pl-8">
-                                Financial analysis complete. Key metrics:
-                                <ul className="list-disc pl-4 mt-1 space-y-0.5">
-                                  <li>ARR: $12M (↑ 200% YoY)</li>
-                                  <li>Gross Margin: 82%</li>
-                                  <li>CAC Payback: 11 months</li>
-                                </ul>
-                                Valuation range looks reasonable given the growth trajectory and market position.
-                              </div>
-                            </div>
-
-                            {/* Technical Lead's Input */}
-                            <div className="space-y-2">
-                              <div className="flex items-center gap-2">
-                                <Avatar className="h-6 w-6">
-                                  <AvatarImage src="/avatars/tech.png" />
-                                  <AvatarFallback className="text-xs">MT</AvatarFallback>
-                                </Avatar>
-                                <div className="text-sm">
-                                  <span className="font-medium">Mike Tech</span>
-                                  <span className="text-muted-foreground"> • Technical Lead</span>
-                                </div>
-                                <span className="text-xs text-muted-foreground ml-auto">10:15 AM</span>
-                              </div>
-                              <div className="text-sm text-muted-foreground pl-8">
-                                Initial technical review positive. Core AI technology is proprietary and scalable. 
-                                Tech stack is modern and well-architected. Scheduled deep-dive session for next week.
-                              </div>
                             </div>
                           </div>
                         </div>
